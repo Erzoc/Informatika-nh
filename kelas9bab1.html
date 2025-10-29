@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berpikir Komputasional & Pemrograman Robomind</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a4d2e 0%, #0d2818 100%);
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+        }
+
+        .shape-1 {
+            width: 100px;
+            height: 100px;
+            background: #FFD700;
+            border-radius: 50%;
+            top: 10%;
+            left: 10%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 80px;
+            height: 80px;
+            background: #FFD700;
+            transform: rotate(45deg);
+            top: 60%;
+            right: 15%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .shape-3 {
+            width: 60px;
+            height: 60px;
+            background: #FFD700;
+            border-radius: 50%;
+            bottom: 20%;
+            left: 20%;
+            animation: float 7s ease-in-out infinite;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 30px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1s ease-in;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "🤖";
+            position: absolute;
+            font-size: 150px;
+            opacity: 0.1;
+            top: -30px;
+            right: -30px;
+            animation: spin 20s linear infinite;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #1a4d2e;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #0d2818;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .hero-icons {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        .section {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #FFD700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #FFD700, #1a4d2e);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(255, 215, 0, 0.3);
+        }
+
+        .section h2 {
+            color: #1a4d2e;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #1a4d2e 0%, #0d2818 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            border: 3px dashed #FFD700;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-placeholder::before {
+            content: "📸";
+            font-size: 80px;
+            opacity: 0.3;
+            position: absolute;
+        }
+
+        .image-placeholder-text {
+            color: #FFD700;
+            font-size: 1.2em;
+            text-align: center;
+            padding: 20px;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            padding: 30px;
+            border-radius: 20px;
+            color: #0d2818;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover::before {
+            transform: translate(-25%, -25%);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(255, 215, 0, 0.5);
+        }
+
+        .card h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .code-box {
+            background: #0d2818;
+            color: #FFD700;
+            padding: 25px;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            border: 2px solid #1a4d2e;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-box::before {
+            content: "💻 CODE";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.8em;
+            opacity: 0.5;
+        }
+
+        .quiz-section {
+            background: linear-gradient(135deg, #1a4d2e 0%, #0d2818 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 25px;
+            margin: 40px 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 3px solid #FFD700;
+        }
+
+        .quiz-question {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #FFD700;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-question:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateX(10px);
+        }
+
+        .quiz-question h4 {
+            color: #FFD700;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .quiz-question p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #ffffff;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #0d2818;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            font-family: inherit;
+            margin: 10px 5px;
+            font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .demo-button:hover {
+            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.5);
+        }
+
+        .demo-button:active {
+            transform: scale(0.98);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.1) 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #FFD700;
+            margin: 20px 0;
+        }
+
+        .info-box h3 {
+            color: #1a4d2e;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .step-item {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            padding: 25px;
+            border-radius: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .step-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .step-number {
+            background: #1a4d2e;
+            color: #FFD700;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .step-content h4 {
+            color: #0d2818;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .step-content p {
+            font-size: 1.05em;
+            line-height: 1.7;
+            color: #1a4d2e;
+        }
+
+        .survey-section {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            padding: 50px 40px;
+            border-radius: 25px;
+            text-align: center;
+            margin: 40px 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .survey-section h2 {
+            color: #0d2818;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 20px;
+            margin-top: 40px;
+            color: #0d2818;
+            font-size: 1.1em;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .school-info {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 3px dashed #1a4d2e;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .subtitle { font-size: 1em; }
+            .section { padding: 25px; }
+            .cards-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="hero-icons">🤖💻🎯</div>
+            <h1>Berpikir Komputasional & Pemrograman</h1>
+            <p class="subtitle">Belajar Algoritma, Pemrograman, dan Robomind!</p>
+            <p style="font-size: 1.1em; color: #0d2818; margin-top: 15px; font-weight: 600;">Materi Informatika untuk Siswa SMA & SMK</p>
+        </header>
+
+        <div class="section">
+            <h2><span class="icon">🧠</span> Apa itu Berpikir Komputasional?</h2>
+            <div class="image-placeholder">
+                <div class="image-placeholder-text">
+                    🖼️ GANTI GAMBAR INI<br>
+                    <span style="font-size: 0.9em;">dengan ilustrasi Berpikir Komputasional</span>
+                </div>
+            </div>
+            <p style="font-size: 1.2em; line-height: 1.8; color: #555; margin-top: 20px;">
+                Berpikir Komputasional adalah cara berpikir untuk memecahkan masalah dengan menggunakan konsep dasar ilmu komputer. Ini bukan hanya tentang coding, tapi tentang bagaimana kita mengurai masalah menjadi bagian-bagian kecil yang bisa diselesaikan secara sistematis!
+            </p>
+            <div class="info-box">
+                <h3>🎯 4 Pilar Berpikir Komputasional:</h3>
+                <p style="font-size: 1.05em; line-height: 1.7;">
+                    <strong>1. Dekomposisi:</strong> Memecah masalah besar menjadi bagian kecil<br>
+                    <strong>2. Pattern Recognition:</strong> Mencari pola atau kesamaan<br>
+                    <strong>3. Abstraksi:</strong> Fokus pada informasi penting, abaikan detail tidak penting<br>
+                    <strong>4. Algoritma:</strong> Membuat langkah-langkah solusi yang sistematis
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">📝</span> Algoritma dan Pemrograman</h2>
+            <div class="image-placeholder">
+                <img src="img/logo-pemrograman.png" alt="Berpikir Komputasional">
+                </div>
+            </div>
+            <p style="font-size: 1.2em; line-height: 1.8; color: #555; margin-top: 20px;">
+                <strong>Algoritma</strong> adalah urutan langkah-langkah logis untuk menyelesaikan suatu masalah. Seperti resep masakan, algoritma memberikan instruksi yang jelas dan berurutan!
+            </p>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>📋 Algoritma</h3>
+                    <p>Langkah-langkah sistematis untuk menyelesaikan masalah. Contoh: cara membuat mie instan!</p>
+                </div>
+                <div class="card">
+                    <h3>💻 Pemrograman</h3>
+                    <p>Menerjemahkan algoritma ke dalam bahasa yang dimengerti komputer.</p>
+                </div>
+                <div class="card">
+                    <h3>🔄 Debugging</h3>
+                    <p>Mencari dan memperbaiki kesalahan dalam program kita.</p>
+                </div>
+            </div>
+            <div class="info-box" style="margin-top: 30px;">
+                <h3>📌 Contoh Algoritma Sederhana:</h3>
+                <div class="code-box">
+                    <strong>Algoritma Membuat Teh Manis:</strong><br><br>
+                    1. Mulai<br>
+                    2. Siapkan gelas, teh celup, air panas, dan gula<br>
+                    3. Masukkan teh celup ke dalam gelas<br>
+                    4. Tuangkan air panas ke gelas<br>
+                    5. Tunggu 3 menit<br>
+                    6. Angkat teh celup<br>
+                    7. Tambahkan gula sesuai selera<br>
+                    8. Aduk hingga rata<br>
+                    9. Selesai
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">🔤</span> Bahasa Pemrograman</h2>
+            <img src="https://imgur.com/a/cBZdkFJ"
+            alt="Deskripsi" 
+            style="width: 100%; height: 300px; object-fit: cover; border-radius: 15px;">
+            <p style="font-size: 1.2em; line-height: 1.8; color: #555; margin-top: 20px;">
+                Bahasa pemrograman adalah bahasa yang digunakan untuk berkomunikasi dengan komputer. Setiap bahasa memiliki aturan dan sintaks tersendiri!
+            </p>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>🐍 Python</h3>
+                    <p>Mudah dipelajari, cocok untuk pemula. Banyak digunakan untuk AI dan data science.</p>
+                </div>
+                <div class="card">
+                    <h3>☕ Java</h3>
+                    <p>Populer untuk aplikasi Android dan sistem enterprise yang besar.</p>
+                </div>
+                <div class="card">
+                    <h3>🌐 JavaScript</h3>
+                    <p>Bahasa untuk membuat website interaktif dan aplikasi web modern.</p>
+                </div>
+                <div class="card">
+                    <h3>⚡ C++</h3>
+                    <p>Powerful dan cepat, digunakan untuk game dan sistem kompleks.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">🤖</span> Aplikasi Robomind</h2>
+            <div class="image-placeholder">
+                <div class="image-placeholder-text">
+                    🖼️ GANTI GAMBAR INI<br>
+                    <span style="font-size: 0.9em;">dengan screenshot aplikasi Robomind</span>
+                </div>
+            </div>
+            <p style="font-size: 1.2em; line-height: 1.8; color: #555; margin-top: 20px;">
+                <strong>Robomind</strong> adalah aplikasi edukasi yang mengajarkan dasar-dasar pemrograman melalui simulasi robot virtual. Dengan Robomind, kamu bisa belajar logika pemrograman dengan cara yang fun dan visual!
+            </p>
+            <div class="info-box">
+                <h3>✨ Keunggulan Robomind:</h3>
+                <p style="font-size: 1.05em; line-height: 1.7;">
+                    ✓ Interface yang mudah dipahami<br>
+                    ✓ Visualisasi robot yang bergerak<br>
+                    ✓ Belajar pemrograman tanpa coding yang rumit<br>
+                    ✓ Cocok untuk pemula belajar logika programming<br>
+                    ✓ Dapat membuat berbagai tantangan dan level
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">🔧</span> Alur Pembuatan Program Robomind</h2>
+            <div class="image-placeholder">
+                <div class="image-placeholder-text">
+                    🖼️ GANTI GAMBAR INI<br>
+                    <span style="font-size: 0.9em;">dengan diagram alur pembuatan program</span>
+                </div>
+            </div>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Analisis Masalah</h4>
+                        <p>Pahami apa yang ingin dicapai. Misalnya: robot harus mengambil bola dan membawanya ke garis finish.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Desain Algoritma</h4>
+                        <p>Buat rancangan langkah-langkah yang harus dilakukan robot secara berurutan.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Menulis Kode</h4>
+                        <p>Terjemahkan algoritma menjadi kode program Robomind dengan perintah-perintah yang sesuai.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Testing & Debugging</h4>
+                        <p>Jalankan program dan lihat apakah robot bergerak sesuai rencana. Perbaiki jika ada error.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Optimasi</h4>
+                        <p>Perbaiki program agar lebih efisien dan cepat dalam menyelesaikan tugas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">📚</span> Struktur Kode Robomind</h2>
+            <div class="image-placeholder">
+                <div class="image-placeholder-text">
+                    🖼️ GANTI GAMBAR INI<br>
+                    <span style="font-size: 0.9em;">dengan contoh struktur kode Robomind</span>
+                </div>
+            </div>
+            <p style="font-size: 1.1em; line-height: 1.8; color: #555; margin-top: 20px;">
+                Robomind menggunakan bahasa pemrograman yang sederhana dengan perintah-perintah dasar yang mudah dipahami:
+            </p>
+            <div class="info-box">
+                <h3>🎮 Perintah Dasar Robomind:</h3>
+                <div class="code-box">
+                    <strong>// Perintah Gerakan</strong><br>
+                    forward(n)      // Maju n langkah<br>
+                    backward(n)     // Mundur n langkah<br>
+                    left()          // Belok kiri 90 derajat<br>
+                    right()         // Belok kanan 90 derajat<br><br>
+                    
+                    <strong>// Perintah Aksi</strong><br>
+                    pickUp()        // Ambil objek<br>
+                    putDown()       // Letakkan objek<br>
+                    paintWhite()    // Cat putih<br><br>
+                    
+                    <strong>// Perintah Kontrol</strong><br>
+                    repeat(n) { }   // Ulangi n kali<br>
+                    if(...) { }     // Percabangan kondisi<br>
+                    while(...) { }  // Perulangan dengan kondisi
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">💡</span> Contoh Pemrograman Sederhana</h2>
+            <div class="image-placeholder">
+                <div class="image-placeholder-text">
+                    🖼️ GANTI GAMBAR INI<br>
+                    <span style="font-size: 0.9em;">dengan screenshot hasil program Robomind</span>
+                </div>
+            </div>
+            <div class="info-box">
+                <h3>🎯 Program 1: Robot Membuat Persegi</h3>
+                <div class="code-box">
+                    <strong>// Program membuat kotak/persegi</strong><br><br>
+                    repeat(4) {<br>
+                    &nbsp;&nbsp;forward(3)<br>
+                    &nbsp;&nbsp;right()<br>
+                    }<br><br>
+                    <span style="color: #4ade80;">// Robot akan bergerak membentuk persegi</span>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 20px;">
+                <h3>🎯 Program 2: Robot Mengambil Objek</h3>
+                <div class="code-box">
+                    <strong>// Program ambil dan letakkan bola</strong><br><br>
+                    forward(5)      <span style="color: #4ade80;">// Maju 5 langkah</span><br>
+                    pickUp()        <span style="color: #4ade80;">// Ambil objek</span><br>
+                    right()<br>
+                    forward(3)<br>
+                    putDown()       <span style="color: #4ade80;">// Letakkan objek</span><br>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 20px;">
+                <h3>🎯 Program 3: Robot dengan Perulangan</h3>
+                <div class="code-box">
+                    <strong>// Program cat 5 kotak berturut-turut</strong><br><br>
+                    repeat(5) {<br>
+                    &nbsp;&nbsp;paintWhite()<br>
+                    &nbsp;&nbsp;forward(1)<br>
+                    }<br>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <h2 style="color: #FFD700; font-size: 2.5em; margin-bottom: 30px; text-align: center;">🧩 Uji Pemahaman Materi</h2>
+            <p style="font-size: 1.2em; text-align: center; margin-bottom: 40px;">Jawablah 5 pertanyaan berikut untuk menguji pemahamanmu tentang Berpikir Komputasional dan Robomind!</p>
+            
+            <div class="quiz-question">
+                <h4>Pertanyaan 1: Analisis Konsep</h4>
+                <p>Seorang siswa ingin membuat robot yang bisa mengambil semua bola di ruangan dan meletakkannya di satu tempat. Jelaskan bagaimana kamu akan menggunakan 4 pilar berpikir komputasional (Dekomposisi, Pattern Recognition, Abstraksi, dan Algoritma) untuk menyelesaikan masalah ini!</p>
+            </div>
+
+            <div class="quiz-question">
+                <h4>Pertanyaan 2: Pemecahan Masalah</h4>
+                <p>Perhatikan kode Robomind berikut:<br><br>
+                <span style="font-family: 'Courier New', monospace; color: #FFD700;">
+                forward(3)<br>
+                right()<br>
+                forward(2)<br>
+                left()<br>
+                forward(3)
+                </span><br><br>
+                Jika robot menghadap ke utara di awal program, ke arah mana robot akan menghadap di akhir program? Gambarkan jalur pergerakan robot dan jelaskan alasanmu!</p>
+            </div>
+
+            <div class="quiz-question">
+                <h4>Pertanyaan 3: Berpikir Logis</h4>
+                <p>Mengapa perulangan (loop) sangat penting dalam pemrograman? Berikan contoh kasus nyata dalam kehidupan sehari-hari yang bisa dianalogikan dengan konsep perulangan, dan jelaskan bagaimana hal itu bisa diterapkan dalam program Robomind!</p>
+            </div>
+
+            <div class="quiz-question">
+                <h4>Pertanyaan 4: Debugging & Problem Solving</h4>
+                <p>Seorang programmer membuat kode untuk robot membentuk persegi, tetapi hasilnya malah membentuk segitiga. Apa saja kemungkinan kesalahan yang bisa terjadi? Bagaimana cara kamu melakukan debugging untuk menemukan dan memperbaiki error tersebut?</p>
+            </div>
+
+            <div class="quiz-question">
+                <h4>Pertanyaan 5: Aplikasi & Kreativitas</h4>
+                <p>Bayangkan kamu harus membuat program Robomind untuk robot yang bisa menyelesaikan maze (labirin). Buatlah pseudocode atau algoritma sederhana yang menjelaskan logika robot untuk menemukan jalan keluar. Pertimbangkan: Bagaimana robot mendeteksi dinding? Apa strategi terbaik agar robot tidak berputar-putar di tempat yang sama?</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; padding: 30px; background: rgba(255, 215, 0, 0.1); border-radius: 15px;">
+                <p style="font-size: 1.2em; margin-bottom: 20px;">💡 <strong>Tips Menjawab:</strong></p>
+                <p style="font-size: 1.05em; line-height: 1.8;">
+                    • Jelaskan dengan detail dan berikan contoh konkret<br>
+                    • Gunakan diagram atau gambar jika membantu<br>
+                    • Tunjukkan proses berpikir komputasional kamu<br>
+                    • Jangan takut salah, yang penting prosesnya!
+                </p>
+            </div>
+        </div>
+
+        <div class="survey-section">
+            <h2><span style="font-size: 1.2em;">📝</span> Survey Penggunaan Teknologi</h2>
+            <p style="font-size: 1.2em; color: #0d2818; margin: 20px 0;">
+                Bantu kami memahami bagaimana teknologi digunakan dalam kehidupan sehari-hari!
+            </p>
+            <p style="font-size: 1.1em; color: #1a4d2e; margin-bottom: 30px;">
+                Isi survey ini untuk berkontribusi dalam penelitian penggunaan teknologi di kalangan pelajar
+            </p>
+            <a href="https://forms.gle/9ozyunSz6pGQk4mP9" target="_blank" style="text-decoration: none;">
+                <button class="demo-button" style="font-size: 1.3em; padding: 20px 50px;">
+                    📋 Isi Survey Sekarang
+                </button>
+            </a>
+        </div>
+
+        <footer>
+            <p style="font-size: 1.3em; font-weight: bold;">🌟 Terus Belajar dan Berlatih Coding! 🌟</p>
+            <p style="margin-top: 15px; font-size: 1em;">Setiap programmer hebat pernah menjadi pemula. Yang membedakan adalah ketekunan!</p>
+            <div class="school-info">
+                <p style="font-size: 1.2em; font-weight: bold; color: #1a4d2e;">📖 Bahan Ajar Informatika</p>
+                <p style="font-size: 1.1em; color: #0d2818; margin-top: 10px;">MA Plus Nurul Hadina</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Add interactive effects
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Smooth scroll for quiz questions
+        document.querySelectorAll('.quiz-question').forEach(question => {
+            question.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(10px)';
+            });
+            question.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Add floating animation to shapes
+        const shapes = document.querySelectorAll('.shape');
+        shapes.forEach((shape, index) => {
+            shape.style.animationDelay = `${index * 0.5}s`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelas 10 - Rangkuman Sistem Komputer & Interaksi</title>
+    <style>
+        /* CSS LENGKAP DARI TEMPLATE (TERMASUK FONT FIX) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a3d2e 0%, #111111 70%);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><g fill="%23f5b700" fill-opacity="0.1"><circle cx="20" cy="20" r="3"/><circle cx="60" cy="60" r="2"/><rect x="40" y="50" width="4" height="4" transform="rotate(45 42 52)"/></g></svg>');
+            background-attachment: fixed;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in;
+            border-bottom: 5px solid #f5b700;
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #f5b700 0%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #444;
+            margin-bottom: 0px;
+        }
+
+        .hero-icons {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        .section {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            color: #0a3d2e;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 6px solid #f5b700;
+            padding-left: 10px;
+        }
+        
+        .section h3 {
+            color: #0a3d2e;
+            font-size: 1.7em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f5b700;
+            padding-bottom: 5px;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        .section p, .section li {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #333; 
+        }
+        .section ul {
+            margin-left: 20px;
+        }
+
+        .example-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #fef9c3 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 5px solid #0a3d2e;
+        }
+        .example-box h4 {
+            color: #0a3d2e;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .example-box p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .media-frame {
+            text-align: center;
+            background: #fdfdfd;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #0a3d2e;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .media-frame h3 {
+            color: #0a3d2e;
+            margin-bottom: 15px;
+        }
+        .media-frame iframe {
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            max-width: 800px;
+        }
+        .media-caption {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 15px;
+            font-style: italic;
+        }
+        
+        /* ===== CSS UNTUK KUIS ===== */
+        .quiz {
+            background: #0a3d2e; /* Hijau Tua */
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+        .quiz h2 {
+            color: white;
+            border-left-color: #f5b700;
+        }
+        .quiz p {
+            color: white;
+        }
+        
+        /* FONT FIX (Soal kuis berwarna putih) */
+        .section.quiz ol { 
+            margin-left: 20px; 
+            font-size: 1.1em; 
+            line-height: 1.8; 
+            padding-left: 20px;
+        }
+        .section.quiz li {
+            color: white; /* Paksa warna putih */
+            margin-bottom: 10px;
+        }
+        
+        .quiz button {
+            background: #f5b700; /* Emas */
+            border: none;
+            color: #0a3d2e; /* Teks Hijau Tua */
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-family: inherit;
+            font-size: 1.1em;
+            transition: background 0.3s;
+        }
+        .quiz button:hover {
+            background: #ffffff;
+        }
+        .answers {
+            display: none;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #fff;
+        }
+        .answers p { color: white; }
+        .answers ul { margin-left: 20px; }
+        .answers li { 
+            color: white; 
+            margin-bottom: 10px; 
+            font-size: 1em;
+            line-height: 1.6;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: #0a3d2e;
+            color: white;
+            border-top: 5px solid #f5b700;
+            border-radius: 20px;
+            margin-top: 40px;
+            font-size: 1.2em;
+        }
+        .school-info {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 3px dashed #f5b700;
+        }
+        .school-info p {
+            margin: 8px 0;
+            color: #f5b700;
+            font-size: 0.8em;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .subtitle { font-size: 1em; }
+            .section { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="hero-icons">🔄🤝🖥️</div>
+            <h1>Rangkuman Sistem Komputer</h1>
+            <p class="subtitle">Interaksi Manusia-Komputer, Peran OS, dan Driver</p>
+            <p style="font-size: 1.1em; color: #0a3d2e; margin-top: 15px; font-weight: 600;">Materi Informatika Kelas 10 (MA Plus Nurul Hadina)</p>
+        </header>
+
+        <div class="section">
+            <h2><span class="icon">📑</span> Rangkuman: Sistem dan Komponennya</h2>
+            <p>
+                Sebagai rangkuman, ingatlah bahwa Sistem Komputer adalah gabungan dari tiga elemen yang tidak terpisahkan:
+            </p>
+            <div class="example-box">
+                <h4>Sistem Komputer = Hardware + Software + Brainware</h4>
+                <p>
+                    <strong>Hardware</strong> (fisik) tidak akan bekerja tanpa <strong>Software</strong> (instruksi), dan keduanya tidak akan berguna tanpa <strong>Brainware</strong> (manusia) yang mengoperasikannya. Tujuan mereka adalah mengubah <strong>Data</strong> mentah menjadi <strong>Informasi</strong> yang bermakna.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">🤝</span> Interaksi Manusia dengan Komputer</h2>
+            <p>
+                Bagaimana Brainware (manusia) berinteraksi dengan Hardware (mesin)? Jawabannya adalah melalui <strong>Software (Perangkat Lunak)</strong>.
+            </p>
+            <p>
+                Kita tidak bisa menyentuh CPU dan menyuruhnya bekerja. Kita menggunakan keyboard (Hardware) untuk mengetik di Microsoft Word (Software Aplikasi), yang kemudian perintahnya dikelola oleh Windows (Software Sistem Operasi) untuk ditampilkan di Monitor (Hardware).
+            </p>
+            
+            <h3>Peran Kunci Sistem Operasi (OS)</h3>
+            <p>
+                <strong>Sistem Operasi (OS)</strong> adalah "Manajer Utama" atau "Jembatan" dalam komputer. OS (seperti Windows, macOS, Linux, Android) memiliki dua tugas utama:
+            </p>
+            <ul>
+                <li><strong>Mengelola Hardware:</strong> Mengatur siapa yang boleh memakai CPU, berapa banyak RAM yang dipakai, dan mengelola file di Hard Disk.</li>
+                <li><strong>Menyediakan Platform:</strong> Memberi landasan bagi software aplikasi (seperti Chrome atau Word) agar bisa berjalan.</li>
+            </ul>
+            
+            <h3>Peran Penting Driver</h3>
+            <p>
+                Lalu, bagaimana OS (misal Windows) tahu cara berbicara dengan jutaan jenis printer atau kartu grafis yang berbeda? Di sinilah <strong>Driver</strong> berperan.
+            </p>
+            <div class="example-box">
+                <h4>Driver = Penerjemah Khusus</h4>
+                <p>
+                    Driver adalah software kecil yang berfungsi sebagai penerjemah bahasa. OS memberi perintah umum (Contoh: "Cetak dokumen ini!"), lalu Driver akan menerjemahkan perintah itu ke bahasa spesifik yang hanya dimengerti oleh hardware tersebut (Contoh: "Printer Canon IP2770, gerakkan tinta hitam ke koordinat X, semprotkan tinta!").
+                </p>
+                <p>
+                    <strong>Kesimpulan:</strong> Manusia (Brainware) -> Aplikasi (Software) -> Sistem Operasi (Software) -> Driver (Software) -> Perangkat Keras (Hardware).
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">🎬</span> Media Pembelajaran</h2>
+            
+            <div class="media-frame">
+                <h3>Video: Apa itu Sistem Operasi (OS) dan Driver?</h3>
+                <iframe 
+                    width="100%" 
+                    height="450"
+                    src="https://www.youtube.com/embed/GANTI_DENGAN_ID_VIDEO_OS"
+                    title="Video Pembelajaran YouTube" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+                <p class="media-caption">
+                    <strong>Petunjuk:</strong> Ganti <code>GANTI_DENGAN_ID_VIDEO_OS</code> dengan ID video YouTube Anda.
+                </p>
+            </div>
+        </div>
+
+        <div class="section quiz">
+            <h2><span class="icon">🧠</span> Kuis Interaktif – Rangkuman Materi</h2>
+            <p>Uji pemahamanmu tentang materi yang sudah dirangkum!</p>
+            <ol>
+                <li>Tiga komponen utama yang membentuk sistem komputer adalah...</li>
+                <li>Perangkat fisik komputer yang bisa disentuh, seperti monitor dan CPU, disebut...</li>
+                <li>Sistem Operasi (Windows, Linux, Android) termasuk dalam kategori komponen...</li>
+                <li>Manusia yang mengoperasikan, membuat program, atau mengelola komputer disebut...</li>
+                <li>Perangkat lunak kecil yang berfungsi sebagai 'penerjemah' antara Sistem Operasi dan perangkat keras (seperti printer atau kartu grafis) disebut...</li>
+                <li>Proses mengubah data mentah (input) menjadi hasil yang bermakna disebut...</li>
+            </ol>
+            <button onclick="toggleAnswers()">Lihat Jawaban</button>
+            <div class="answers" id="quizAnswers">
+              <p><strong>Kunci Jawaban:</strong></p>
+              
+              <ul>
+                <li>Hardware (Perangkat Keras), Software (Perangkat Lunak), dan Brainware (Pengguna).</li>
+                <li>Hardware (Perangkat Keras).</li>
+                <li>Software (Perangkat Lunak), lebih spesifiknya Perangkat Lunak Sistem (Sistem Operasi).</li>
+                <li>Brainware.</li>
+                <li>Driver (atau Device Driver).</li>
+                <li>Informasi (Output).</li>
+              </ul>
+              </div>
+        </div>
+
+
+        <footer>
+            <p>🌟 <strong>Kamu Sudah Sampai di Akhir Rangkuman!</strong> 🌟</p>
+            <div class="school-info">
+                <p style="font-weight: bold;">
+                &copy; 2025 Platform Belajar Informatika — MA PLUS.<br>
+                Oleh: <strong>Fauzan Reza, S.T</strong> (Guru Informatika <strong>YPI Nurul Hadina</strong>)
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleAnswers() {
+            const answers = document.getElementById('quizAnswers');
+            const quizButton = document.querySelector('.quiz button');
+            
+            if (answers.style.display === 'block') {
+                answers.style.display = 'none';
+                quizButton.textContent = 'Lihat Jawaban';
+            } else {
+                answers.style.display = 'block';
+                quizButton.textContent = 'Sembunyikan Jawaban';
+            }
+        }
+    </script>
+</body>
+</html>

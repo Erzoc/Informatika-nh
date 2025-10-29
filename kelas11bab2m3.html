@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelas 11 - Literasi Digital: Konten Digital</title>
+    <style>
+        /* CSS LENGKAP DARI TEMPLATE (TERMASUK FONT FIX) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a3d2e 0%, #111111 70%);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><g fill="%23f5b700" fill-opacity="0.1"><circle cx="20" cy="20" r="3"/><circle cx="60" cy="60" r="2"/><rect x="40" y="50" width="4" height="4" transform="rotate(45 42 52)"/></g></svg>');
+            background-attachment: fixed;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in;
+            border-bottom: 5px solid #f5b700;
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #f5b700 0%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #444;
+            margin-bottom: 0px;
+        }
+
+        .hero-icons {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        .section {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            color: #0a3d2e;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 6px solid #f5b700;
+            padding-left: 10px;
+        }
+        
+        .section h3 {
+            color: #0a3d2e;
+            font-size: 1.7em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f5b700;
+            padding-bottom: 5px;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        .data-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .data-card {
+            padding: 35px;
+            border-radius: 20px;
+            color: white; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .data-card-primary {
+            background: linear-gradient(135deg, #0a3d2e 0%, #00503a 100%);
+        }
+        
+        .data-card-secondary {
+            background: linear-gradient(135deg, #f5b700 0%, #B8860B 100%);
+        }
+
+        .data-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .data-card h3 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section .data-card h3 {
+            color: white; 
+            border-bottom: none; 
+            margin-top: 0; 
+        }
+
+        .data-card p, .section p, .section li {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #333; 
+        }
+        .data-card p, .data-card li {
+            color: white; 
+        }
+
+        .data-card ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        .section ul, .section ol {
+            margin-left: 20px;
+        }
+
+        .data-card li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.05em;
+        }
+
+        .data-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        
+        .example-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #fef9c3 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 5px solid #0a3d2e;
+        }
+        .example-box h4 {
+            color: #0a3d2e;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .example-box p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #333;
+        }
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        .tip-card {
+            background: linear-gradient(135deg, #f9f9f9 0%, #f0f4f8 100%);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .tip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .tip-card h4 {
+            color: #0a3d2e;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .tip-card p {
+            color: #333; 
+        }
+        .tip-card[style*="background"] h4,
+        .tip-card[style*="background"] p {
+            color: white; 
+        }
+        
+        .media-frame {
+            text-align: center;
+            background: #fdfdfd;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #0a3d2e;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .media-frame h3 {
+            color: #0a3d2e;
+            margin-bottom: 15px;
+        }
+        .media-frame iframe {
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            max-width: 800px;
+        }
+        .media-caption {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 15px;
+            font-style: italic;
+        }
+        
+        /* [BARU] Style untuk Kuis Interaktif (ala Kelas 10) */
+        .quiz-section {
+            background: #0a3d2e; /* Latar belakang hijau tua */
+            color: white;
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .quiz-section h2 {
+            color: #f5b700; /* Judul kuis warna emas */
+            border-left: 6px solid #f5b700;
+        }
+        .quiz-section ol li {
+            color: white; /* Teks soal putih */
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            margin-left: 20px;
+        }
+        .quiz-button {
+            background: #f5b700;
+            border: none;
+            color: #0a3d2e;
+            font-weight: bold;
+            padding: 15px 35px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .quiz-button:hover {
+            background: white;
+        }
+        .quiz-answers {
+            display: none; /* Sembunyi by default */
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 25px;
+        }
+        .quiz-answers p { color: white; }
+        .quiz-answers ul { margin-left: 20px; }
+        .quiz-answers ul li { 
+            color: #f0f0f0; 
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+        /* End Kuis Style */
+        
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: #0a3d2e;
+            color: white;
+            border-top: 5px solid #f5b700;
+            border-radius: 20px;
+            margin-top: 40px;
+            font-size: 1.2em;
+        }
+        .school-info {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 3px dashed #f5b700;
+        }
+        .school-info p {
+            margin: 8px 0;
+            color: #f5b700;
+            font-size: 0.8em;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .subtitle { font-size: 1em; }
+            .section { padding: 25px; }
+            .data-types { grid-template-columns: 1fr; }
+            .process-flow { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="hero-icons">📱✍️🎬📸</div>
+            <h1>Literasi Digital</h1>
+            <p class="subtitle">Mengenal dan Menciptakan Konten Digital yang Kreatif dan Bertanggung Jawab</p>
+            <p style="font-size: 1.1em; color: #0a3d2e; margin-top: 15px; font-weight: 600;">Simulasi Belajar Siswa SMA Kelas 11 (MA Plus Nurul Hadina)</p>
+        </header>
+
+        <div class="section">
+            <h2><span class="icon">🖼️</span> 1. Jenis-Jenis Konten Digital</h2>
+            <p>
+                Konten digital adalah segala bentuk informasi yang ada dalam format digital. Di era internet, konten adalah raja. Konten bisa menghibur, mengedukasi, atau menginspirasi.
+            </p>
+            <div class="data-types">
+                <div class="data-card data-card-primary">
+                    <h3>Konten Teks & Gambar</h3>
+                    <p><strong>Teks:</strong> Bentuk konten paling dasar. Contohnya adalah <strong>Artikel Berita</strong>, postingan <strong>Blog</strong>, <strong>E-book</strong>, dan status di media sosial.</p>
+                    <p><strong>Gambar:</strong> Konten visual statis. Contohnya adalah <strong>Fotografi</strong>, <strong>Infografis</strong> (informasi dalam bentuk grafis), dan <strong>Meme</strong>.</p>
+                </div>
+
+                <div class="data-card data-card-secondary">
+                    <h3>Konten Audio & Video</h3>
+                    <p><strong>Audio:</strong> Konten berbasis suara. Contohnya adalah <strong>Podcast</strong> (siaran audio), <strong>Musik Digital</strong> (Spotify, JOOX), dan <strong>Audiobook</strong>.</p>
+                    <p><strong>Video:</strong> Konten visual bergerak. Ini adalah jenis konten paling populer saat ini. Contohnya adalah <strong>Vlog</strong>, <strong>Film Pendek</strong>, <strong>Animasi</strong>, dan video di <strong>TikTok</strong> atau <strong>YouTube</strong>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">🛠️</span> 2. Peralatan Membuat Konten Digital</h2>
+            <p>
+                Untuk menjadi seorang "Content Creator", kita tidak selalu butuh alat mahal. Kita bisa mulai dengan apa yang kita punya.
+            </p>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h4>1. Perangkat Keras (Hardware)</h4>
+                    <p>Alat fisik yang kita gunakan. Contoh: <strong>Smartphone</strong> (paling utama!), <strong>Kamera</strong> (DSLR/Mirrorless), <strong>Mikrofon</strong> (agar suara jernih), dan <strong>Laptop/Komputer</strong> (untuk editing).</p>
+                </div>
+                <div class="tip-card">
+                    <h4>2. Perangkat Lunak (Software)</h4>
+                    <p>Aplikasi yang kita pakai. Contoh: <strong>Aplikasi Edit Foto</strong> (Canva, PicsArt), <strong>Aplikasi Edit Video</strong> (CapCut, Kinemaster), dan <strong>Platform</strong> (YouTube, Instagram, Blogger).</p>
+                </div>
+                <div class="tip-card">
+                    <h4>3. Koneksi Internet</h4>
+                    <p>Sangat penting untuk melakukan riset topik, mencari inspirasi, dan yang paling utama, meng-upload (mengunggah) konten yang sudah jadi.</p>
+                </div>
+                <div class="tip-card" style="background: linear-gradient(135deg, #0a3d2e 0%, #00503a 100%); color: white;">
+                    <h4 style="color:white;">4. Ide & Kreativitas</h4>
+                    <p>Peralatan paling penting! Tanpa ide yang unik dan kreativitas, alat secanggih apapun tidak akan menghasilkan konten yang menarik.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">✍️</span> 3. Pembuatan Blog (Konten Teks)</h2>
+            <p>
+                <strong>Blog</strong> adalah singkatan dari "Web Log". Ini adalah sebuah website atau jurnal online pribadi yang berisi tulisan (postingan) tentang topik tertentu, seperti catatan harian, review film, resep masakan, atau tutorial.
+            </p>
+            
+            <h3>Langkah-Langkah Membuat Blog:</h3>
+            <ul>
+                <li><strong>Pilih Platform:</strong> Tentukan di mana kamu akan membuat blog. Platform paling populer untuk pemula adalah <strong>Blogger.com</strong> (milik Google) dan <strong>WordPress.com</strong>.</li>
+                <li><strong>Tentukan Niche (Topik):</strong> Fokus pada satu topik yang kamu sukai, misalnya "Review Game", "Tips Belajar", atau "Cerita Perjalanan".</li>
+                <li><strong>Desain Tampilan:</strong> Pilih template atau tema yang sesuai dengan topik dan kepribadianmu agar blog terlihat menarik.</li>
+                <li><strong>Tulis & Publikasi:</strong> Mulailah menulis postingan pertamamu. Pastikan tulisanmu orisinal, bermanfaat, dan mudah dibaca. Konsistensi adalah kunci!</li>
+            </ul>
+            
+            <div class="example-box">
+                <h4>Tips Platform:</h4>
+                <p><strong>Blogger.com:</strong> Sangat mudah digunakan untuk pemula, 100% gratis, dan terintegrasi langsung dengan akun Google Anda.</p>
+                <p><strong>WordPress.com:</strong> Sedikit lebih kompleks tapi jauh lebih fleksibel. Banyak pilihan kustomisasi (ada versi gratis dan berbayar).</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><span class="icon">🎬</span> 4. Pembuatan Vlog (Konten Video)</h2>
+            <p>
+                <strong>Vlog</strong> adalah singkatan dari "Video Blog". Ini adalah konten blog yang disajikan dalam format video. Platform utamanya adalah <strong>YouTube</strong>, namun format video pendek seperti <strong>TikTok</strong> dan <strong>Instagram Reels</strong> juga sangat populer.
+            </p>
+            
+            <h3>Langkah-Langkah Membuat Vlog:</h3>
+            <ul>
+                <li><strong>Perencanaan (Pra-Produksi):</strong> Tentukan ide dan konsep video. Buat poin-poin penting atau storyboard sederhana agar rekaman terarah.</li>
+                <li><strong>Rekaman (Produksi):</strong> Ambil gambar menggunakan smartphone atau kamera. Perhatikan pencahayaan (jangan membelakangi cahaya) dan kualitas suara (gunakan mikrofon jika ada).</li>
+                <li><strong>Editing (Pasca-Produksi):</strong> Ini adalah proses terpenting. Potong klip yang tidak perlu, gabungkan video, tambahkan musik latar (pastikan non-copyright), dan beri teks atau judul. Aplikasi seperti CapCut sangat populer untuk ini.</li>
+                <li><strong>Publikasi (Upload):</strong> Unggah videomu ke platform pilihan (YouTube, TikTok, dll.). Buat judul yang menarik dan thumbnail (gambar sampul) yang bagus.</li>
+            </ul>
+            
+            <div class="media-frame" style="margin-top: 30px;">
+                <h3>Video: Tips Memulai Vlog</h3>
+                <iframe 
+                    width="100%" 
+                    height="450"
+                    src="https://www.youtube.com/embed/GANTI_DENGAN_ID_VIDEO"
+                    title="Video Pembelajaran YouTube" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+                <p class="media-caption">
+                    <strong>Petunjuk:</strong> Ganti <code>GANTI_DENGAN_ID_VIDEO</code> dengan ID video YouTube tutorial vlog.
+                </p>
+            </div>
+        </div>
+
+        <div class="section quiz-section">
+            <h2><span class="icon">🧠</span> Kuis Interaktif – Konten Digital</h2>
+            <ol>
+                <li>Jenis konten digital yang berfokus pada tulisan dan artikel di sebuah website pribadi disebut...</li>
+                <li>Platform seperti YouTube, TikTok, dan Instagram Reels berfokus pada jenis konten apa?</li>
+                <li>Sebutkan DUA contoh perangkat keras (hardware) yang penting untuk merekam Vlog!</li>
+                <li>Proses memotong klip video, menggabungkannya, dan menambahkan musik disebut proses...</li>
+                <li>Blogger.com dan WordPress.com adalah dua platform populer yang digunakan untuk membuat...</li>
+            </ol>
+            <button class="quiz-button" onclick="toggleQuizAnswers()">Lihat Jawaban</button>
+            
+            <div class="quiz-answers" style="display: none;">
+              <p><strong>Jawaban:</strong></p>
+              <ul>
+                <li>Blog (atau Artikel).</li>
+                <li>Konten Video (atau Vlog).</li>
+                <li>Smartphone/Kamera (untuk gambar) dan Mikrofon (untuk suara).</li>
+                <li>Editing (atau Pasca-Produksi).</li>
+                <li>Blog.</li>
+              </ul>
+            </div>
+        </div>
+
+
+        <footer>
+                <p>🌟 <strong>Jadilah Kreator Konten yang Positif dan Kreatif!</strong> 🌟</p>
+                <p style="margin-top: 0px; font-size: 1em;">Mulai dari hal yang kamu sukai, dan teruslah belajar!</p>
+                <div class="school-info">
+                    <p style="font-weight: bold;">
+                    &copy; 2025 Platform Belajar Informatika — MA PLUS.<br>
+                    Oleh: <strong>Fauzan Reza, S.T</strong> (Guru Informatika <strong>YPI Nurul Hadina</strong>)
+                    </p>
+                </div>
+        </footer>
+    </div>
+
+    <script>
+        // Skrip untuk Kuis Interaktif (toggle show/hide)
+        function toggleQuizAnswers() {
+            const answers = document.querySelector('.quiz-answers');
+            const button = document.querySelector('.quiz-button');
+            
+            if (answers.style.display === 'block') {
+                answers.style.display = 'none';
+                button.textContent = 'Lihat Jawaban';
+            } else {
+                answers.style.display = 'block';
+                button.textContent = 'Sembunyikan Jawaban';
+            }
+        }
+    </script>
+</body>
+</html>

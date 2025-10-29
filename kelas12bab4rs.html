@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelas 12 - Rangkuman Analisis Data</title>
+    <style>
+        /* CSS LENGKAP DARI TEMPLATE (TERMASUK FONT FIX) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a3d2e 0%, #111111 70%);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><g fill="%23f5b700" fill-opacity="0.1"><circle cx="20" cy="20" r="3"/><circle cx="60" cy="60" r="2"/><rect x="40" y="50" width="4" height="4" transform="rotate(45 42 52)"/></g></svg>');
+            background-attachment: fixed;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in;
+            border-bottom: 5px solid #f5b700;
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #f5b700 0%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #444;
+            margin-bottom: 0px;
+        }
+
+        .hero-icons {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        .section {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            color: #0a3d2e;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 6px solid #f5b700;
+            padding-left: 10px;
+        }
+        
+        .section h3 {
+            color: #0a3d2e;
+            font-size: 1.7em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f5b700;
+            padding-bottom: 5px;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+        
+        /* CSS untuk Kartu Data (Sumber Data) */
+        .data-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .data-card {
+            padding: 35px;
+            border-radius: 20px;
+            color: white; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        .data-card-primary {
+            background: linear-gradient(135deg, #0a3d2e 0%, #00503a 100%);
+        }
+        .data-card-secondary {
+            background: linear-gradient(135deg, #f5b700 0%, #B8860B 100%);
+        }
+        .data-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+        .data-card h3 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section .data-card h3 {
+            color: white; 
+            border-bottom: none; 
+            margin-top: 0; 
+        }
+        .data-card ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        .data-card li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.05em;
+        }
+        .data-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        /* Akhir CSS Kartu Data */
+
+        
+        /* ===== [KODE PERBAIKAN FONT] ===== */
+        /* Aturan umum untuk paragraf di .section */
+        .section p, .section li {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #333; 
+        }
+        
+        /* Aturan spesifik untuk paragraf & list di DALAM .data-card */
+        .section .data-card p, 
+        .section .data-card li {
+            color: white; /* Memaksa font jadi putih di dalam kartu berwarna */
+        }
+        /* ================================= */
+
+        .section ul {
+            margin-left: 20px;
+        }
+
+        .example-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #fef9c3 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 5px solid #0a3d2e;
+        }
+        .example-box h4 {
+            color: #0a3d2e;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .example-box p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        /* CSS Latihan Interaktif */
+        .interactive-demo {
+            background: linear-gradient(135deg, #e6f5e3 0%, #fff8e1 100%);
+            padding: 40px;
+            border-radius: 25px;
+            margin: 30px 0;
+        }
+        .demo-area {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        .demo-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 3px solid #0a3d2e;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+        .demo-button {
+            background: #0a3d2e;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-family: inherit;
+            margin: 10px 5px;
+        }
+        .demo-button:hover {
+            background: #f5b700;
+            color: #0a3d2e;
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        #result-area {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #e6f5e3 0%, #f0f4f8 100%);
+            border-radius: 15px;
+            min-height: 100px;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+        #result-area h3 { color: #0a3d2e; }
+        #result-area .interpretation-box {
+            margin-top: 20px; 
+            padding: 15px; 
+            background: #0a3d2e; 
+            color: white; 
+            border-radius: 10px;
+        }
+        #result-area .interpretation-box p {
+            color: white;
+        }
+        /* Akhir CSS Latihan Interaktif */
+        
+        /* ===== CSS KUIS ===== */
+        .quiz {
+            background: #0a3d2e;
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+        .quiz h2 {
+            color: white;
+            border-left-color: #f5b700;
+        }
+        .quiz p {
+            color: white;
+        }
+        .section.quiz ol { 
+            margin-left: 20px; 
+            font-size: 1.1em; 
+            line-height: 1.8; 
+            padding-left: 20px;
+        }
+        .section.quiz li {
+            color: white; 
+            margin-bottom: 10px;
+        }
+        .quiz button {
+            background: #f5b700;
+            border: none;
+            color: #0a3d2e;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-family: inherit;
+            font-size: 1.1em;
+            transition: background 0.3s;
+        }
+        .quiz button:hover {
+            background: #ffffff;
+        }
+        .answers {
+            display: none;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #fff;
+        }
+        .answers p { color: white; }
+        .answers ul { margin-left: 20px; }
+        .answers li { 
+            color: white; 
+            margin-bottom: 10px; 
+            font-size: 1em;
+            line-height: 1.6;
+        }
+        /* ==================== */
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: #0a3d2e;
+            color: white;
+            border-top: 5px solid #f5b700;
+            border-radius: 20px;
+            margin-top: 40px;
+            font-size: 1.2em;
+        }
+        .school-info {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 3px dashed #f5b700;
+        }
+        .school-info p {
+            margin: 8px 0;
+            color: #f5b700;
+            font-size: 0.8em;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .subtitle { font-size: 1em; }
+            .section { padding: 25px; }
+            .data-types { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="hero-icons">📊📈💡🎯</div>
+            <h1>Rangkuman Analisis Data</h1>
+            <p class="subtitle">Mulai dari Sumber Data hingga Pengambilan Keputusan</p>
+            <p style="font-size: 1.1em; color: #0a3d2e; margin-top: 15px; font-weight: 600;">Materi Informatika Kelas 12 (MA Plus Nurul Hadina)</p>
+        </header>
+
+        <div class="section">
+            <h2><span class="icon">💾</span> 1. Rangkuman: Sumber Data</h2>
+            <p>
+                Analisis data dimulai dari pengumpulan data. Sumber data secara umum terbagi dua:
+            </p>
+            <div class="data-types">
+                <div class="data-card data-card-primary">
+                    <h3>📝 Data Primer</h3>
+                    <p><strong>Data yang dikumpulkan langsung</strong> oleh peneliti dari sumber pertama.</p>
+                    <p>Metode:</p>
+                    <ul>
+                        <li>Wawancara</li>
+                        <li>Survei / Kuesioner</li>
+                        <li>Observasi (Pengamatan)</li>
+                    </ul>
+                </div>
+                <div class="data-card data-card-secondary">
+                    <h3>📚 Data Sekunder</h3>
+                    <p><strong>Data yang sudah ada</strong> dan dikumpulkan oleh pihak lain.</p>
+                    <p>Sumber:</p>
+                    <ul>
+                        <li>Data BPS (Badan Pusat Statistik)</li>
+                        <li>Jurnal ilmiah atau laporan</li>
+                        <li>Database perusahaan</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">⚙️</span> 2. Rangkuman: Pengolahan Data</h2>
+            <p>
+                Setelah dikumpulkan, data mentah harus diolah. Ada dua cara utama:
+            </p>
+            
+            <h3>Pengolahan Data Manual</h3>
+            <p>
+                Dilakukan tanpa komputer, biasanya menggunakan alat sederhana seperti kalkulator dan turus (tally) untuk menghitung frekuensi.
+            </p>
+            <div class="example-box">
+                <h4>Contoh Manual:</h4>
+                <p>Mendata 5 nilai: <code>7, 8, 7, 9, 8</code>. Menghitung Rata-rata: (7+8+7+9+8) / 5 = 39 / 5 = 7.8. Metode ini <strong>lambat</strong> dan <strong>rentan salah hitung</strong> jika datanya banyak.</p>
+            </div>
+
+            <h3>Pengolahan Data dengan Komputer</h3>
+            <p>
+                Menggunakan software <em>spreadsheet</em> seperti <strong>Microsoft Excel</strong> atau <strong>Google Sheets</strong>. Metode ini <strong>cepat</strong>, <strong>akurat</strong>, dan bisa mengolah jutaan data.
+            </p>
+            <p>Fungsi utamanya:</p>
+            <ul>
+                <li><strong>Membuat Tabel:</strong> Mengatur data dalam baris dan kolom.</li>
+                <li><strong>Menghitung Statistik:</strong> Menggunakan rumus seperti <code>=SUM()</code> (total), <code>=AVERAGE()</code> (rata-rata), <code>=MAX()</code> (tertinggi), <code>=MIN()</code> (terendah).</li>
+                <li><strong>Membuat Grafik:</strong> Visualisasi data instan (Grafik Batang, Garis, Lingkaran).</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2><span class="icon">🎮</span> Latihan: Simulasi Pengolahan Komputer</h2>
+            <div class="interactive-demo">
+                <h3 style="color: #0a3d2e; margin-bottom: 20px; font-size: 1.8em;">Hitung & Tafsirkan Data</h3>
+                <p style="font-size: 1.1em; margin-bottom: 20px; color: #555;">Masukkan nilai-nilai (pisahkan dengan koma) untuk melihat hasil statistik dan interpretasinya secara otomatis.</p>
+                <div class="demo-area">
+                    <input type="text" id="dataInput" class="demo-input" placeholder="Contoh: 70, 80, 85, 90, 75, 88" value="70, 80, 85, 90, 75, 88">
+                    <div style="text-align: center;">
+                        <button class="demo-button" onclick="processData()">📊 Hitung & Tafsirkan</button>
+                    </div>
+                    <div id="result-area"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">💡</span> 3. Rangkuman: Penafsiran & Pengambilan Keputusan</h2>
+            <p>
+                Ini adalah langkah terpenting: mengubah data (angka) menjadi <strong>informasi (makna)</strong> dan <strong>tindakan (keputusan)</strong>.
+            </p>
+            
+            <h3>Menafsirkan Data</h3>
+            <p>
+                Bukan hanya tahu angkanya, tapi tahu artinya.
+            </p>
+            <ul>
+                <li><strong>Menafsirkan Statistik:</strong> "Rata-rata (Mean) nilai kelas adalah 85" berarti performa kelas secara umum baik. "Nilai terendah (Min) adalah 40" berarti ada siswa yang butuh perhatian.</li>
+                <li><strong>Menafsirkan Grafik:</strong> "Grafik garis penjualan naik" berarti tren positif. "Grafik batang produk A lebih tinggi dari B" berarti produk A lebih laku.</li>
+            </ul>
+
+            <h3>Pengambilan Keputusan</h3>
+            <p>
+                Menggunakan penafsiran untuk mengambil langkah selanjutnya.
+            </p>
+            <div class="example-box">
+                <h4>Contoh Alur:</h4>
+                <p>
+                    <strong>Fakta (Data):</strong> Grafik penjualan "Siomay" paling rendah di kantin.<br>
+                    <strong>Penafsiran (Informasi):</strong> Siomay tidak diminati siswa.<br>
+                    <strong>Keputusan (Tindakan):</strong> Mengganti menu Siomay dengan menu lain, atau membuat promosi diskon Siomay.
+                </p>
+            </div>
+        </div>
+
+        <div class="section quiz">
+            <h2><span class="icon">🧠</span> Kuis Interaktif – Rangkuman Analisis Data</h2>
+            <p>Uji pemahamanmu tentang seluruh materi analisis data!</p>
+            <ol>
+                <li>Data yang kamu kumpulkan sendiri melalui survei disebut data...</li>
+                <li>Data yang kamu ambil dari laporan BPS (Badan Pusat Statistik) disebut data...</li>
+                <li>Menghitung rata-rata nilai kelas menggunakan rumus <code>=AVERAGE()</code> di Excel termasuk metode pengolahan data secara...</li>
+                <li>"Grafik penjualan produk A terus menurun selama 3 bulan terakhir." Kalimat ini adalah contoh dari...</li>
+                <li>Berdasarkan penafsiran di nomor 4, tindakan "Menghentikan produksi produk A" adalah contoh dari...</li>
+                <li>Fungsi <code>=MAX()</code> di Excel digunakan untuk mencari...</li>
+            </ol>
+            <button onclick="toggleAnswers()">Lihat Jawaban</button>
+            <div class="answers" id="quizAnswers">
+              <p><strong>Kunci Jawaban:</strong></p>
+              <ul>
+                <li>Data Primer.</li>
+                <li>Data Sekunder.</li>
+                <li>Komputer (Menggunakan spreadsheet).</li>
+                <li>Penafsiran Data (atau Interpretasi Grafik).</li>
+                <li>Pengambilan Keputusan (Tindakan).</li>
+                <li>Nilai tertinggi (Maksimum) dalam kumpulan data.</li>
+              </ul>
+            </div>
+        </div>
+
+
+        <footer>
+            <p>🌟 <strong>Data adalah Kunci untuk Memahami Dunia!</strong>  🌟</p>
+            <p style="margin-top: 0px; font-size: 1em;">Terus asah kemampuan analisis datamu untuk masa depan yang lebih cerah!</p>
+            <div class="school-info">
+                <p style="font-weight: bold;">
+                &copy; 2025 Platform Belajar Informatika — MA PLUS.<br>
+                Oleh: <strong>Fauzan Reza, S.T</strong> (Guru Informatika <strong>YPI Nurul Hadina</strong>)
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // --- Skrip Kuis ---
+        function toggleAnswers() {
+            const answers = document.getElementById('quizAnswers');
+            const quizButton = document.querySelector('.quiz button');
+            
+            if (answers.style.display === 'block') {
+                answers.style.display = 'none';
+                quizButton.textContent = 'Lihat Jawaban';
+            } else {
+                answers.style.display = 'block';
+                quizButton.textContent = 'Sembunyikan Jawaban';
+            }
+        }
+        
+        // --- Skrip Latihan Interaktif (Statistik) ---
+        function processData() {
+            const input = document.getElementById('dataInput').value;
+            const resultArea = document.getElementById('result-area');
+            
+            if (!input.trim()) {
+                resultArea.innerHTML = '<p style="color: #D32F2F; font-weight: bold;">⚠️ Silakan masukkan data terlebih dahulu!</p>';
+                return;
+            }
+            
+            const numbers = input.split(',').map(num => parseFloat(num.trim())).filter(num => !isNaN(num));
+            
+            if (numbers.length === 0) {
+                resultArea.innerHTML = '<p style="color: #D32F2F; font-weight: bold;">⚠️ Data tidak valid! Gunakan format angka yang dipisah koma.</p>';
+                return;
+            }
+            
+            const sum = numbers.reduce((a, b) => a + b, 0);
+            const average = (sum / numbers.length).toFixed(2);
+            const max = Math.max(...numbers);
+            const min = Math.min(...numbers);
+            
+            resultArea.innerHTML = `
+                <h3>📊 Hasil Statistik:</h3>
+                <p><strong>🔢 Jumlah Data:</strong> ${numbers.length} nilai</p>
+                <p><strong>➕ Total (SUM):</strong> ${sum.toFixed(2)}</p>
+                <p><strong>📊 Rata-rata (AVERAGE):</strong> ${average}</p>
+                <p><strong>🔝 Nilai Tertinggi (MAX):</strong> ${max}</p>
+                <p><strong>🔻 Nilai Terendah (MIN):</strong> ${min}</p>
+                <div class="interpretation-box">
+                    <p><strong>💡 Interpretasi Sederhana:</strong></p>
+                    <p>Dari ${numbers.length} data, nilai rata-rata adalah <strong>${average}</strong>. Nilai tertinggi adalah <strong>${max}</strong> dan terendah <strong>${min}</strong>.
+                    ${average > 75 ? 'Performa data ini secara umum baik.' : 'Performa data ini perlu dievaluasi.'}
+                    </p>
+                </div>
+            `;
+            
+            resultArea.style.animation = 'none';
+            setTimeout(() => {
+                resultArea.style.animation = 'fadeIn 0.5s ease-in';
+            }, 10);
+        }
+    </script>
+</body>
+</html>

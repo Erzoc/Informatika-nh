@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelas 10 - Analisis dan Interpretasi Data</title>
+    <style>
+        /* CSS LENGKAP DARI TEMPLATE (TERMASUK FONT FIX) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a3d2e 0%, #111111 70%);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><g fill="%23f5b700" fill-opacity="0.1"><circle cx="20" cy="20" r="3"/><circle cx="60" cy="60" r="2"/><rect x="40" y="50" width="4" height="4" transform="rotate(45 42 52)"/></g></svg>');
+            background-attachment: fixed;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in;
+            border-bottom: 5px solid #f5b700;
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #f5b700 0%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #444;
+            margin-bottom: 0px;
+        }
+
+        .hero-icons {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        .section {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            color: #0a3d2e;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 6px solid #f5b700;
+            padding-left: 10px;
+        }
+        
+        .section h3 {
+            color: #0a3d2e;
+            font-size: 1.7em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f5b700;
+            padding-bottom: 5px;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+        
+        /* Kartu Perbandingan (Analisis vs Interpretasi) */
+        .data-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .data-card {
+            padding: 35px;
+            border-radius: 20px;
+            color: white; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        .data-card-primary {
+            background: linear-gradient(135deg, #0a3d2e 0%, #00503a 100%);
+        }
+        .data-card-secondary {
+            background: linear-gradient(135deg, #f5b700 0%, #B8860B 100%);
+        }
+        .data-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+        .data-card h3 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section .data-card h3 {
+            color: white; 
+            border-bottom: none; 
+            margin-top: 0; 
+        }
+        .data-card ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        .data-card li {
+            padding: 5px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.05em;
+        }
+        .data-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        /* Akhir Kartu Perbandingan */
+        
+        /* Tabel Olah Data */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 1em;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .styled-table thead tr {
+            background-color: #0a3d2e;
+            color: #ffffff;
+            text-align: left;
+        }
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+        }
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid #0a3d2e;
+        }
+        /* Style untuk bagian Olah Data (Hasil) */
+        .styled-table tfoot td {
+            font-weight: bold;
+        }
+        .styled-table tfoot tr:nth-of-type(odd) {
+            background-color: #e6f5e3; /* Hijau muda */
+        }
+        .styled-table tfoot code {
+            color: #D32F2F; /* Merah untuk rumus */
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1em;
+        }
+        /* Akhir Tabel Olah Data */
+
+
+        /* ===== [FONT FIX KARTU] ===== */
+        .section p, .section li {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #333; 
+        }
+        .section .data-card p, 
+        .section .data-card li {
+            color: white; /* Paksa font jadi putih */
+        }
+        /* ============================ */
+
+        .section ul {
+            margin-left: 20px;
+        }
+
+        .example-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #fef9c3 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 5px solid #0a3d2e;
+        }
+        .example-box h4 {
+            color: #0a3d2e;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .example-box p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        
+        /* ===== CSS KUIS ===== */
+        .quiz {
+            background: #0a3d2e;
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+        .quiz h2 {
+            color: white;
+            border-left-color: #f5b700;
+        }
+        .quiz p {
+            color: white;
+        }
+        .section.quiz ol { 
+            margin-left: 20px; 
+            font-size: 1.1em; 
+            line-height: 1.8; 
+            padding-left: 20px;
+        }
+        .section.quiz li {
+            color: white; 
+            margin-bottom: 10px;
+        }
+        .quiz button {
+            background: #f5b700;
+            border: none;
+            color: #0a3d2e;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-family: inherit;
+            font-size: 1.1em;
+            transition: background 0.3s;
+        }
+        .quiz button:hover {
+            background: #ffffff;
+        }
+        .answers {
+            display: none;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #fff;
+        }
+        .answers p { color: white; }
+        .answers ul { margin-left: 20px; }
+        .answers li { 
+            color: white; 
+            margin-bottom: 10px; 
+            font-size: 1em;
+            line-height: 1.6;
+        }
+        /* ==================== */
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: #0a3d2e;
+            color: white;
+            border-top: 5px solid #f5b700;
+            border-radius: 20px;
+            margin-top: 40px;
+            font-size: 1.2em;
+        }
+        .school-info {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 3px dashed #f5b700;
+        }
+        .school-info p {
+            margin: 8px 0;
+            color: #f5b700;
+            font-size: 0.8em;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .subtitle { font-size: 1em; }
+            .section { padding: 25px; }
+            .data-types { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="hero-icons">📊📈🤔</div>
+            <h1>Analisis & Interpretasi Data</h1>
+            <p class="subtitle">Membaca Pola dan Memberi Makna pada Data</p>
+            <p style="font-size: 1.1em; color: #0a3d2e; margin-top: 15px; font-weight: 600;">Materi Informatika Kelas 10 (MA Plus Nurul Hadina)</p>
+        </header>
+
+        <div class="section">
+            <h2><span class="icon">❓</span> 1. Apa Beda Analisis & Interpretasi?</h2>
+            <p>
+                Dalam proses analisis data, kedua langkah ini saling berkaitan erat.
+            </p>
+            <div class="data-types">
+                <div class="data-card data-card-primary">
+                    <h3>⚙️ Analisis Data</h3>
+                    <p><strong>Proses Teknis</strong> mengolah data untuk menemukan pola.</p>
+                    <p>Aktivitas:</p>
+                    <ul>
+                        <li>Mengurutkan data (Sort)</li>
+                        <li>Memfilter data (Filter)</li>
+                        <li>Menghitung statistik (Mean, Max, Min)</li>
+                    </ul>
+                    <p><strong>Hasil:</strong> Angka atau Fakta (Contoh: "Rata-rata = 79.5")</p>
+                </div>
+                <div class="data-card data-card-secondary">
+                    <h3>💡 Interpretasi Data</h3>
+                    <p><strong>Proses Pemikiran</strong> untuk memberi makna pada hasil analisis.</p>
+                    <p>Aktivitas:</p>
+                    <ul>
+                        <li>Menjelaskan arti angka</li>
+                        <li>Menghubungkan dengan konteks</li>
+                        <li>Menarik kesimpulan</li>
+                    </ul>
+                    <p><strong>Hasil:</strong> Wawasan (Contoh: "Nilai kelas sudah baik karena rata-rata di atas KKM")</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">📑</span> 2. Contoh Tabel Olah Data (Studi Kasus)</h2>
+            <p>
+                Berikut adalah tabel data mentah (misal di Excel) yang berisi nilai ulangan 10 siswa.
+            </p>
+            
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Siswa (Kolom B)</th>
+                        <th>Nilai (Kolom C)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Ahmad</td>
+                        <td>85</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Budi</td>
+                        <td>90</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Citra</td>
+                        <td>75</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Dewi</td>
+                        <td>65</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Eka</td>
+                        <td>80</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Fajar</td>
+                        <td>70</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Gita</td>
+                        <td>85</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Hadi</td>
+                        <td>95</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Indah</td>
+                        <td>70</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Joko</td>
+                        <td>80</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"><strong>Hasil Analisis (Olah Data)</strong></td>
+                        <td><strong>Hasil</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Nilai Rata-Rata (Mean) <br> <code>=AVERAGE(C2:C11)</code></td>
+                        <td><strong>79.5</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Nilai Tertinggi (Max) <br> <code>=MAX(C2:C11)</code></td>
+                        <td><strong>95</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Nilai Terendah (Min) <br> <code>=MIN(C2:C11)</code></td>
+                        <td><strong>65</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Jumlah Siswa (Count) <br> <code>=COUNT(C2:C11)</code></td>
+                        <td><strong>10</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2><span class="icon">🤔</span> 3. Contoh Soal Analisis & Interpretasi</h2>
+            <p>
+                Berdasarkan tabel olah data di atas, mari kita jawab beberapa pertanyaan:
+            </p>
+            
+            <h3>Contoh Soal 1 (Analisis)</h3>
+            <p><strong>Pertanyaan:</strong> Berapa nilai rata-rata, nilai tertinggi, dan nilai terendah dari data tersebut?</p>
+            <div class="example-box">
+                <h4>Jawaban (Analisis):</h4>
+                <p>
+                    Ini adalah langkah analisis (menemukan fakta). Jawabannya ada langsung di tabel hasil olah data:
+                </p>
+                <ul>
+                    <li>Nilai Rata-Rata: <strong>79.5</strong></li>
+                    <li>Nilai Tertinggi: <strong>95</strong> (dimiliki oleh Hadi)</li>
+                    <li>Nilai Terendah: <strong>65</strong> (dimiliki oleh Dewi)</li>
+                </ul>
+            </div>
+            
+            <h3>Contoh Soal 2 (Interpretasi)</h3>
+            <p><strong>Pertanyaan:</strong> Jika KKM (Kriteria Ketuntasan Minimal) adalah 75, bagaimana interpretasi Anda terhadap nilai kelas tersebut?</p>
+            <div class="example-box">
+                <h4>Jawaban (Interpretasi):</h4>
+                <p>
+                    Ini adalah langkah interpretasi (memberi makna):
+                </p>
+                <ul>
+                    <li><strong>Kesimpulan Positif:</strong> Secara keseluruhan, kelas ini <strong>sudah tuntas</strong>, karena nilai rata-rata (79.5) berada di atas KKM (75).</li>
+                    <li><strong>Kesimpulan Negatif (Tindakan):</strong> Meskipun begitu, ada 3 siswa (Dewi, Fajar, Indah) yang nilainya <strong>di bawah KKM</strong>.</li>
+                    <li><strong>Keputusan:</strong> Guru perlu memberikan remedial untuk 3 siswa tersebut.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section quiz">
+            <h2><span class="icon">🧠</span> Kuis Interaktif – Analisis & Interpretasi</h2>
+            <p>Uji pemahamanmu tentang materi ini!</p>
+            <ol>
+                <li>Menghitung rata-rata nilai menggunakan rumus <code>=AVERAGE()</code> di Excel adalah contoh kegiatan...</li>
+                <li>Menyimpulkan bahwa "siswa perlu remedial" setelah melihat nilai 65 (di bawah KKM 75) adalah contoh kegiatan...</li>
+                <li>Angka "95" pada data nilai tertinggi adalah hasil dari...</li>
+                <li>Kalimat "Performa kelas sudah baik" adalah hasil dari...</li>
+                <li>Rumus <code>=MIN()</code> di Excel digunakan untuk melakukan... (Analisis/Interpretasi)</li>
+            </ol>
+            <button onclick="toggleAnswers()">Lihat Jawaban</button>
+            <div class="answers" id="quizAnswers">
+              <p><strong>Kunci Jawaban:</strong></p>
+              <ul>
+                <li>Analisis Data (Proses teknis menghitung).</li>
+                <li>Interpretasi Data (Memberi makna dan kesimpulan).</li>
+                <li>Analisis Data (Mencari fakta/nilai tertinggi).</li>
+                <li>Interpretasi Data (Memberi makna pada nilai rata-rata).</li>
+                <li>Analisis Data (Mencari fakta/nilai terendah).</li>
+              </ul>
+            </div>
+        </div>
+
+
+        <footer>
+            <p>🌟 <strong>Analisis adalah menghitung, Interpretasi adalah bercerita!</strong>  🌟</p>
+            <div class="school-info">
+                <p style="font-weight: bold;">
+                &copy; 2025 Platform Belajar Informatika — MA PLUS.<br>
+                Oleh: <strong>Fauzan Reza, S.T</strong> (Guru Informatika <strong>YPI Nurul Hadina</strong>)
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleAnswers() {
+            const answers = document.getElementById('quizAnswers');
+            const quizButton = document.querySelector('.quiz button');
+            
+            if (answers.style.display === 'block') {
+                answers.style.display = 'none';
+                quizButton.textContent = 'Lihat Jawaban';
+            } else {
+                answers.style.display = 'block';
+                quizButton.textContent = 'Sembunyikan Jawaban';
+            }
+        }
+    </script>
+</body>
+</html>

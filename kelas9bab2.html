@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Informatika SMA & SMP | Penerapan Berpikir Komputasional</title>
+  <style>
+    /* ==== GLOBAL ==== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(160deg, #f5b700, #145a14, #000000);
+      color: #fff;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 30px;
+      background: linear-gradient(120deg, #f5b700, #145a14);
+      border-bottom: 4px solid #fff;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      color: #fff;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    }
+
+    header p {
+      font-size: 1.2em;
+      margin-top: 10px;
+      color: #f0f0f0;
+    }
+
+    /* ==== SECTION MATERI ==== */
+    section {
+      padding: 40px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      max-width: 330px;
+      padding: 20px;
+      transition: transform .3s, background .3s;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      background: rgba(255,255,255,0.2);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border: 2px solid #f5b700;
+    }
+
+    .card h3 {
+      color: #f5b700;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #fff;
+      font-size: 0.95em;
+      line-height: 1.5;
+    }
+
+    /* ==== SURVEY SECTION ==== */
+    .survey {
+      background: linear-gradient(120deg, #145a14, #000);
+      text-align: center;
+      padding: 50px 20px;
+      color: #fff;
+    }
+
+    .survey h2 {
+      color: #f5b700;
+      margin-bottom: 10px;
+    }
+
+    .survey p {
+      font-size: 1em;
+      margin-bottom: 20px;
+    }
+
+    .survey a {
+      background: #f5b700;
+      color: #000;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .survey a:hover {
+      background: #fff;
+      color: #145a14;
+    }
+
+    /* ==== PERTANYAAN ==== */
+    .pertanyaan {
+      background: rgba(255,255,255,0.08);
+      padding: 40px 20px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .pertanyaan h2 {
+      color: #f5b700;
+      margin-bottom: 16px;
+    }
+
+    .pertanyaan ol {
+      text-align: left;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.8;
+      font-size: 1.05em;
+    }
+
+    /* ==== FOOTER ==== */
+    footer {
+      background: #000;
+      text-align: center;
+      color: #f5b700;
+      padding: 20px;
+      font-size: 0.9em;
+    }
+
+    @media (max-width: 768px) {
+      header h1 { font-size: 1.8em; }
+      .card { max-width: 90%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Penerapan Berpikir Komputasional</h1>
+    <p>Materi Informatika SMA & SMP — Yayasan Nurul Hadina</p>
+  </header>
+
+  <section>
+    <!-- Algoritma dan Pemrograman -->
+    <div class="card">
+      <img src="img/algoritma.jpg" alt="Algoritma dan Pemrograman" />
+      <h3>Algoritma dan Pemrograman</h3>
+      <p>Mengenal langkah-langkah logis untuk menyelesaikan masalah serta mengubahnya menjadi instruksi komputer yang bisa dijalankan.</p>
+    </div>
+
+    <!-- Bahasa Pemrograman -->
+    <div class="card">
+      <img src="img/bahasa.jpg" alt="Bahasa Pemrograman" />
+      <h3>Bahasa Pemrograman</h3>
+      <p>Memahami cara komputer mengerti instruksi manusia dengan bahasa seperti Python, Scratch, atau RoboMind.</p>
+    </div>
+
+    <!-- Aplikasi RoboMind -->
+    <div class="card">
+      <img src="img/robomind.jpg" alt="Aplikasi RoboMind" />
+      <h3>Aplikasi RoboMind</h3>
+      <p>Simulasi menarik untuk belajar robotika dan logika pemrograman dengan karakter robot kecil yang bisa kamu kendalikan!</p>
+    </div>
+
+    <!-- Alur Pembuatan Program -->
+    <div class="card">
+      <img src="img/alur.jpg" alt="Alur Pembuatan Program" />
+      <h3>Alur Pembuatan Program</h3>
+      <p>Dari ide → algoritma → kode → uji coba → hasil.  
+      Setiap program memiliki tahapan yang sistematis.</p>
+    </div>
+
+    <!-- Struktur Kode & Pemrograman Sederhana -->
+    <div class="card">
+      <img src="img/struktur.jpg" alt="Struktur Kode" />
+      <h3>Struktur Kode & Pemrograman Sederhana</h3>
+      <p>Pelajari bentuk dasar kode: input, proses, output — hingga membuat program mini seperti kalkulator sederhana.</p>
+    </div>
+  </section>
+
+  <div class="survey">
+    <h2>📋 Survey Siswa</h2>
+    <p>Isi survei berikut untuk membantu kami memahami penggunaan teknologi dalam kehidupan sehari-hari kamu 👇</p>
+    <a href="https://forms.gle/9ozyunSz6pGQk4mP9" target="_blank">Isi Survey Sekarang</a>
+  </div>
+
+  <div class="pertanyaan">
+    <h2>💡 Pertanyaan Daya Nalar</h2>
+    <ol>
+      <li>Mengapa penting mempelajari algoritma sebelum menulis program?</li>
+      <li>Bagaimana bahasa pemrograman membantu komputer memahami instruksi manusia?</li>
+      <li>Menurutmu, kelebihan RoboMind dibandingkan belajar kode berbasis teks?</li>
+      <li>Bagaimana tahapan berpikir komputasional bisa diterapkan di kehidupan sehari-hari?</li>
+      <li>Ceritakan contoh pemecahan masalah menggunakan logika algoritma di dunia nyata!</li>
+    </ol>
+  </div>
+
+  <footer>
+    © 2025 Yayasan Nurul Hadina | Guru: Fauzan Reza, S.T
+  </footer>
+
+</body>
+</html>

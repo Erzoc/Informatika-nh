@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Survey Siswa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <nav class="site-nav">
+      <a href="index.html">Beranda</a>
+      <a href="kelas-sma.html">Kelas SMA</a>
+      <a href="kelas-smp.html">Kelas SMP</a>
+    </nav>
+
+    <h1>Survey Siswa</h1>
+    <p class="note">Berikan masukan agar situs dan materi bisa lebih baik.</p>
+
+    <div class="form-wrap" style="max-width:700px; margin-top:12px">
+      <div class="form-row">
+        <label>Nama (opsional)</label>
+        <input id="nama" class="input" placeholder="Nama (boleh kosong)">
+      </div>
+
+      <div class="form-row">
+        <label>Apa yang paling kamu suka dari materi?</label>
+        <input id="suka" class="input" placeholder="Contoh: penjelasan singkat, latihan praktis">
+      </div>
+
+      <div class="form-row">
+        <label>Apa yang bisa diperbaiki?</label>
+        <textarea id="perbaiki" placeholder="Masukan saran"></textarea>
+      </div>
+
+      <div class="form-row">
+        <label>Rating keseluruhan</label>
+        <select id="rating" class="input">
+          <option value="">Pilih</option>
+          <option>5 — Sangat Baik</option>
+          <option>4 — Baik</option>
+          <option>3 — Cukup</option>
+          <option>2 — Kurang</option>
+          <option>1 — Buruk</option>
+        </select>
+      </div>
+
+      <div class="form-row center">
+        <button class="btn btn-primary" id="kirim">Kirim Masukan</button>
+      </div>
+
+      <p id="status" class="note center" style="display:none; margin-top:8px"></p>
+    </div>
+
+    <div style="margin-top:18px">
+      <a class="btn btn-outline" href="index.html">Kembali</a>
+    </div>
+
+    <footer class="footer">
+     &copy; 2025 Survey Siswa — MA PLUS & SMP IT.<br>
+  Oleh: <strong>Fauzan Reza, S.T</strong> (Guru Informatika  <strong>YPI Nurul Hadina</strong>)
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('kirim').addEventListener('click', function(){
+      const nama = document.getElementById('nama').value.trim();
+      const suka = document.getElementById('suka').value.trim();
+      const perbaiki = document.getElementById('perbaiki').value.trim();
+      const rating = document.getElementById('rating').value;
+
+      if(!rating){
+        alert('Silakan pilih rating.');
+        return;
+      }
+
+      const entry = {
+        tipe: 'siswa',
+        nama: nama || null,
+        suka: suka || null,
+        perbaiki: perbaiki || null,
+        rating: rating,
+        created_at: new Date().toISOString()
+      };
+
+      const key = 'surveys_siswa';
+      const arr = JSON.parse(localStorage.getItem(key) || '[]');
+      arr.push(entry);
+      localStorage.setItem(key, JSON.stringify(arr));
+
+      const st = document.getElementById('status');
+      st.style.display = 'block';
+      st.textContent = 'Terima kasih atas masukannya — tersimpan di browser.';
+      // reset
+      document.getElementById('nama').value = '';
+      document.getElementById('suka').value = '';
+      document.getElementById('perbaiki').value = '';
+      document.getElementById('rating').value = '';
+    });
+  </script>
+</body>
+</html>

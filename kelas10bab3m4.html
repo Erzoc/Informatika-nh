@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelas 10 - Visualisasi dan Publikasi Data</title>
+    <style>
+        /* CSS LENGKAP DARI TEMPLATE (TERMASUK FONT FIX) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a3d2e 0%, #111111 70%);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><g fill="%23f5b700" fill-opacity="0.1"><circle cx="20" cy="20" r="3"/><circle cx="60" cy="60" r="2"/><rect x="40" y="50" width="4" height="4" transform="rotate(45 42 52)"/></g></svg>');
+            background-attachment: fixed;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in;
+            border-bottom: 5px solid #f5b700;
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #f5b700 0%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #444;
+            margin-bottom: 0px;
+        }
+
+        .hero-icons {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        .section {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            color: #0a3d2e;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 6px solid #f5b700;
+            padding-left: 10px;
+        }
+        
+        .section h3 {
+            color: #0a3d2e;
+            font-size: 1.7em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f5b700;
+            padding-bottom: 5px;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        /* Grid (Untuk Jenis Grafik) */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        .tip-card {
+            background: linear-gradient(135deg, #f9f9f9 0%, #f0f4f8 100%);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .tip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .tip-card h4 {
+            color: #0a3d2e;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        .tip-card[style*="background"] h4,
+        .tip-card[style*="background"] p {
+            color: white; 
+        }
+        .tip-card[style*="background"] li {
+            color: white;
+            margin-bottom: 5px;
+        }
+        /* Akhir Grid */
+
+
+        /* ===== [FONT FIX KARTU] ===== */
+        .section p, .section li {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #333; 
+        }
+        .section .data-card p, 
+        .section .data-card li {
+            color: white; /* Memaksa font jadi putih */
+        }
+        /* ============================ */
+
+        .section ul {
+            margin-left: 20px;
+        }
+
+        .example-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #fef9c3 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 5px solid #0a3d2e;
+        }
+        .example-box h4 {
+            color: #0a3d2e;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .example-box p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        /* Media Frame */
+        .media-frame {
+            text-align: center;
+            background: #fdfdfd;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #0a3d2e;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .media-frame h3 {
+            color: #0a3d2e;
+            margin-bottom: 15px;
+        }
+        .media-frame img { /* Khusus untuk gambar di frame */
+            width: 100%; 
+            max-width: 600px; 
+            border-radius: 10px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+            display: block; 
+            margin: 0 auto; 
+            border: 1px solid #ddd;
+        }
+        .media-caption {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 15px;
+            font-style: italic;
+        }
+        /* Akhir Media Frame */
+        
+        
+        /* ===== CSS KUIS ===== */
+        .quiz {
+            background: #0a3d2e;
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+        .quiz h2 {
+            color: white;
+            border-left-color: #f5b700;
+        }
+        .quiz p {
+            color: white;
+        }
+        .section.quiz ol { 
+            margin-left: 20px; 
+            font-size: 1.1em; 
+            line-height: 1.8; 
+            padding-left: 20px;
+        }
+        .section.quiz li {
+            color: white; 
+            margin-bottom: 10px;
+        }
+        .quiz button {
+            background: #f5b700;
+            border: none;
+            color: #0a3d2e;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-family: inherit;
+            font-size: 1.1em;
+            transition: background 0.3s;
+        }
+        .quiz button:hover {
+            background: #ffffff;
+        }
+        .answers {
+            display: none;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #fff;
+        }
+        .answers p { color: white; }
+        .answers ul { margin-left: 20px; }
+        .answers li { 
+            color: white; 
+            margin-bottom: 10px; 
+            font-size: 1em;
+            line-height: 1.6;
+        }
+        /* ==================== */
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: #0a3d2e;
+            color: white;
+            border-top: 5px solid #f5b700;
+            border-radius: 20px;
+            margin-top: 40px;
+            font-size: 1.2em;
+        }
+        .school-info {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 3px dashed #f5b700;
+        }
+        .school-info p {
+            margin: 8px 0;
+            color: #f5b700;
+            font-size: 0.8em;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .subtitle { font-size: 1em; }
+            .section { padding: 25px; }
+            .tips-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="hero-icons">📊📈🌐</div>
+            <h1>Visualisasi dan Publikasi Data</h1>
+            <p class="subtitle">Menceritakan Data dengan Grafik dan Membagikannya</p>
+            <p style="font-size: 1.1em; color: #0a3d2e; margin-top: 15px; font-weight: 600;">Materi Informatika Kelas 10 (MA Plus Nurul Hadina)</p>
+        </header>
+
+        <div class="section">
+            <h2><span class="icon">📊</span> 1. Apa Itu Visualisasi Data?</h2>
+            <p>
+                <strong>Visualisasi Data</strong> adalah proses mengubah data (angka, teks) menjadi representasi visual seperti grafik, diagram, atau peta.
+            </GINFO>
+            Tujuannya adalah untuk "menceritakan" sebuah kisah dari data.
+            </p>
+            <p>
+                Otak manusia memproses gambar jauh lebih cepat daripada teks atau angka. Dengan visualisasi, kita bisa dengan mudah menemukan:
+            </p>
+            <ul>
+                <li><strong>Pola (Pattern):</strong> Sesuatu yang berulang.</li>
+                <li><strong>Tren (Trend):</strong> Pergerakan data (naik, turun, atau datar).</li>
+                <li><strong>Outlier:</strong> Data yang "aneh" atau berbeda jauh dari yang lain.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">📈</span> 2. Memilih Jenis Grafik yang Tepat</h2>
+            <p>
+                Bagian tersulit bukanlah membuat grafik (di Excel/Sheets itu mudah), tetapi memilih <strong>jenis grafik yang tepat</strong> untuk data Anda.
+            </p>
+            
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h4>Grafik Batang (Bar Chart)</h4>
+                    <p>
+                        <strong>Kapan digunakan?</strong> Untuk <strong>membandingkan</strong> jumlah antar kategori yang berbeda.
+                    </p>
+                    <p>
+                        <strong>Contoh:</strong> Membandingkan jumlah siswa di Kelas 10A, 10B, dan 10C.
+                    </p>
+                </div>
+                <div class="tip-card">
+                    <h4>Grafik Garis (Line Chart)</h4>
+                    <p>
+                        <strong>Kapan digunakan?</strong> Untuk menunjukkan <strong>tren</strong> atau perubahan data dari waktu ke waktu.
+                    </p>
+                    <p>
+                        <strong>Contoh:</strong> Melihat kenaikan suhu harian dari jam 6 pagi sampai jam 6 sore.
+                    </p>
+                </div>
+                <div class="tip-card">
+                    <h4>Grafik Lingkaran (Pie Chart)</h4>
+                    <p>
+                        <strong>Kapan digunakan?</strong> Untuk menunjukkan <strong>proporsi</strong> atau persentase (bagian dari keseluruhan).
+                    </p>
+                    <p>
+                        <strong>Contoh:</strong> Persentase hobi siswa dalam satu kelas (misal: 50% Futsal, 30% Basket, 20% Lainnya).
+                    </p>
+                </div>
+            </div>
+            
+            <div class="media-frame" style="margin-top: 30px;">
+                <h3>Contoh Jenis Grafik</h3>
+                <img 
+                    src="assets/jenis-grafik.png" 
+                    alt="Contoh grafik batang, garis, dan lingkaran">
+                <p class="media-caption">
+                    <strong>Petunjuk:</strong> Ganti <code>assets/jenis-grafik.png</code> dengan path ke gambar contoh grafik Anda (lokal atau GitHub raw link).
+                </p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><span class="icon">🌐</span> 3. Publikasi Data</h2>
+            <p>
+                Setelah data dianalisis dan divisualisasikan, langkah terakhir adalah <strong>Publikasi</strong>, yaitu membagikan hasil temuan Anda kepada orang lain (audiens).
+            </p>
+            <p>
+                Cara kita mempublikasikan data bergantung pada siapa audiens kita. Data yang sama bisa disajikan dengan cara berbeda.
+            </p>
+
+            <div class="example-box">
+                <h4>Metode Publikasi Data:</h4>
+                <ul>
+                    <li><strong>Laporan (Report):</strong> Dokumen formal (misal: PDF atau Word) yang berisi penjelasan lengkap, tabel, dan grafik. Cocok untuk guru atau arsip sekolah.</li>
+                    <li><strong>Presentasi (Slide):</strong> Poin-poin penting yang disajikan dalam slide (PowerPoint, Google Slides, Canva). Cocok untuk presentasi di depan kelas.</li>
+                    <li><strong>Infografis:</strong> Poster visual yang menarik dan mudah dibaca. Cocok untuk dibagikan di media sosial atau mading sekolah.</li>
+                    <li><strong>Dashboard Interaktif:</strong> (Tingkat lanjut) Tampilan data *real-time* yang bisa diklik. Contoh: Dashboard data COVID-19.</li>
+                </ul>
+            </div>
+            
+            <h3>Tools (Alat Bantu)</h3>
+            <p>
+                Anda tidak perlu bingung. Alat yang sering kita gunakan sudah sangat mumpuni:
+            </p>
+            <ul>
+                <li><strong>Microsoft Excel / Google Sheets:</strong> Untuk mengolah data dan membuat grafik.</li>
+                <li><strong>Microsoft PowerPoint / Google Slides / Canva:</strong> Untuk mempublikasikan data dalam bentuk presentasi atau infografis.</li>
+            </ul>
+        </div>
+
+        <div class="section quiz">
+            <h2><span class="icon">🧠</span> Kuis Interaktif – Visualisasi & Publikasi</h2>
+            <p>Uji pemahamanmu tentang materi ini!</p>
+            <ol>
+                <li>Proses mengubah data angka menjadi gambar atau grafik disebut...</li>
+                <li>Jika kamu ingin melihat tren (kenaikan/penurunan) nilai ulanganmu selama satu semester, grafik apa yang paling tepat digunakan?</li>
+                <li>Guru meminta data persentase siswa yang suka Futsal, Basket, dan Voli dalam satu kelas. Grafik apa yang paling cocok?</li>
+                <li>Apa tujuan utama dari visualisasi data?</li>
+                <li>Saat kamu menyajikan data hasil penelitianmu dalam bentuk slide PowerPoint di depan kelas, kegiatan itu disebut...</li>
+            </ol>
+            <button onclick="toggleAnswers()">Lihat Jawaban</button>
+            <div class="answers" id="quizAnswers">
+              <p><strong>Kunci Jawaban:</strong></p>
+              <ul>
+                <li>Visualisasi Data.</li>
+                <li>Grafik Garis (Line Chart), karena menunjukkan tren dari waktu ke waktu.</li>
+                <li>Grafik Lingkaran (Pie Chart), karena menunjukkan proporsi/persentase.</li>
+                <li>Agar data (angka) lebih mudah dipahami oleh otak manusia, dan untuk melihat pola/tren.</li>
+                <li>Publikasi Data (dalam bentuk presentasi).</li>
+              </ul>
+            </div>
+        </div>
+
+
+        <footer>
+            <p>🌟 <strong>Satu gambar bernilai seribu data!</strong>  🌟</p>
+            <div class="school-info">
+                <p style="font-weight: bold;">
+                &copy; 2025 Platform Belajar Informatika — MA PLUS.<br>
+                Oleh: <strong>Fauzan Reza, S.T</strong> (Guru Informatika <strong>YPI Nurul Hadina</strong>)
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleAnswers() {
+            const answers = document.getElementById('quizAnswers');
+            const quizButton = document.querySelector('.quiz button');
+            
+            if (answers.style.display === 'block') {
+                answers.style.display = 'none';
+                quizButton.textContent = 'Lihat Jawaban';
+            } else {
+                answers.style.display = 'block';
+                quizButton.textContent = 'Sembunyikan Jawaban';
+            }
+        }
+    </script>
+</body>
+</html>
