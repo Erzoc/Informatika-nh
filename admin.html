@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Portal Siswa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <style>
+    /* Import Font */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    /* Variabel Desain (Futuristik Vektor - Biru/Ungu/Cyan) */
+    :root {
+      --bg-color: #0a0a23; /* Dark Navy */
+      --bg-gradient: linear-gradient(160deg, #3a0d6d, #0a0a23, #0b2f4f); /* Ungu -> Navy -> Biru Tua */
+      --glass-bg: rgba(255, 255, 255, 0.05); /* Kaca transparan */
+      --glass-border: rgba(0, 229, 255, 0.2); /* Border Cyan transparan */
+      --text-color: #f0f0f0; /* Putih */
+      --text-muted: #a0a0a0; /* Abu-abu */
+      --accent-color: #00e5ff; /* Cyan Terang (Vektor) */
+      --accent-color-hover: #9f2fff; /* Ungu Terang (Hover) */
+      --success-color: #00c853;
+      --error-color: #ff3d00;
+      --card-bg: rgba(10, 10, 35, 0.7); /* Kaca lebih gelap */
+
+      /* Variabel Dashboard (untuk Navbar Emas) */
+      --gold: #FFD700;
+      --gold-dark: #FFA500;
+      --green: #1a4d2e;
+      --green-light: #2d7a4d;
+      --white: #ffffff;
+      --gray-light: #f5f5f5;
+      --gray-dark: #333;
+      --gray-text: #555;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Reset Dasar */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      background-image: var(--bg-gradient);
+      color: var(--text-color); /* <-- Teks default PUTIH */
+      min-height: 100vh;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      position: relative; 
+      overflow-x: hidden;
+    }
+
+    /* Animasi Background */
+    .bg-animation {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -1;
+    }
+    .bg-animation .box-symbol {
+      position: absolute; display: block; list-style: none;
+      width: 150px; height: 2px;
+      background: var(--accent-color);
+      box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
+      border: none;
+      animation: animate-symbols 25s linear infinite;
+      bottom: -150px;
+    }
+    @keyframes animate-symbols {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-1000px) rotate(360deg); opacity: 0; }
+    }
+    .bg-animation .box-symbol:nth-child(1) { left: 25%; width: 250px; height: 1px; animation-delay: 0s; }
+    .bg-animation .box-symbol:nth-child(2) { left: 10%; width: 100px; height: 3px; animation-delay: 2s; animation-duration: 12s; }
+    .bg-animation .box-symbol:nth-child(3) { left: 70%; width: 150px; height: 2px; animation-delay: 4s; }
+    .bg-animation .box-symbol:nth-child(4) { left: 40%; width: 200px; height: 1px; animation-delay: 0s; animation-duration: 18s; }
+    .bg-animation .box-symbol:nth-child(5) { left: 65%; width: 120px; height: 2px; animation-delay: 0s; }
+
+    /* Header (Navbar Emas) */
+    .navbar {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--green); /* Teks Hijau di atas Emas */
+      text-decoration: none;
+    }
+    .navbar .logo span { color: var(--green-light); }
+
+    /* Dropdown Profil */
+    .profile-dropdown {
+      position: relative; display: inline-block; z-index: 101; 
+    }
+    .profile-trigger {
+      background: transparent; border: none;
+      color: var(--green); /* Teks Hijau di atas Emas */
+      font-weight: 700; font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer; padding: 0.5rem; border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    .profile-trigger:hover, .profile-trigger:focus {
+      background: rgba(0,0,0,0.1); outline: none;
+    }
+    .dropdown-content {
+      display: none; position: absolute; right: 0;
+      top: calc(100% + 10px); 
+      background: var(--glass-bg); /* Kaca Transparan */
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px; min-width: 280px; 
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      color: #f0f0f0; /* Teks Putih */
+    }
+    .profile-info {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .profile-info div {
+      font-size: 0.9rem; color: #a0a0a0; 
+      margin-bottom: 0.75rem; display: flex;
+    }
+    .profile-info div:last-child { margin-bottom: 0; }
+    .profile-info div strong {
+      color: #f0f0f0; min-width: 70px; 
+      display: inline-block; font-weight: 600;
+    }
+    .profile-info div span { color: #f0f0f0; }
+    .dropdown-links a {
+      display: block; padding: 0.85rem 1.5rem;
+      text-decoration: none; color: #f0f0f0; 
+      font-weight: 500; font-size: 0.9rem;
+      transition: background 0.3s ease; cursor: pointer;
+    }
+    .dropdown-links a:hover { background: rgba(255, 255, 255, 0.1); }
+    .dropdown-links a:first-child { border-bottom: 1px solid var(--glass-border); }
+    .dropdown-content.show { display: block; }
+
+    /* Konten Admin (Kaca) */
+    .main-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      flex-grow: 1; 
+      z-index: 5;
+    }
+    .card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+    }
+    .card-header {
+      /* Ganti header admin agar konsisten dengan tema futuristik */
+      background: rgba(0, 229, 255, 0.1); /* Latar Cyan transparan */
+      border-bottom: 1px solid var(--glass-border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--accent-color); /* Teks Cyan */
+    }
+    .card-header i { font-size: 1.25rem; }
+    .card-header h2 { font-size: 1.25rem; font-weight: 600; }
+    .card-body { padding: 1.5rem; flex-grow: 1; }
+    .curriculum-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* Form (Input, Label, Select) */
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { 
+      display: block; 
+      font-size: 0.9rem; 
+      font-weight: 600; /* Ditebalkan */
+      margin-bottom: 0.5rem; 
+      color: var(--text-color); /* Putih */
+    }
+    .form-group input[type="text"],
+    .form-group input[type="file"],
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      background: rgba(0, 0, 0, 0.25); /* Background input gelap */
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--text-color); /* Teks input PUTIH */
+      font-size: 0.95rem;
+      font-family: 'Poppins', sans-serif;
+    }
+    .form-group select option {
+      color: #000; /* Option dropdown harus terlihat */
+      background: #fff;
+    }
+    .form-group textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 10px 0 var(--accent-color);
+    }
+
+    /* Tombol */
+    .btn {
+      padding: 10px 18px; border: none; border-radius: 6px;
+      font-size: 0.95rem; font-weight: 600; cursor: pointer;
+      transition: all 0.3s ease; text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: var(--accent-color); /* Cyan */
+      color: var(--bg-color); /* Hitam */
+    }
+    .btn-primary:hover {
+      background: var(--accent-color-hover); /* Ungu */
+      color: var(--text-color); /* Putih */
+      box-shadow: 0 0 15px 0 var(--accent-color-hover);
+    }
+    .btn-danger {
+      background: var(--error-color);
+      color: var(--text-color);
+    }
+    .btn-danger:hover { background: #ff6133; }
+    
+    /* Tombol Edit di tabel */
+    .btn-edit {
+      background: var(--accent-color);
+      color: var(--bg-color);
+    }
+
+    /* Tabel Data */
+    .data-table-wrapper {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .data-table th,
+    .data-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--glass-border);
+      font-size: 0.9rem;
+      color: var(--text-color); /* Teks tabel PUTIH */
+      font-weight: 500;
+    }
+    .data-table th {
+      background: rgba(0, 0, 0, 0.3);
+      font-weight: 700;
+      color: var(--accent-color); /* Header tabel Cyan */
+      position: sticky;
+      top: 0;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover { background: rgba(0, 229, 255, 0.03); }
+    .data-table .action-cell { text-align: right; white-space: nowrap; }
+
+    /* Modal (Tetap Terang agar Kontras) */
+    .modal-overlay {
+      display: none; position: fixed; z-index: 1001; 
+      left: 0; top: 0; width: 100%; height: 100%;
+      overflow: auto; background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background-color: var(--white); 
+      padding: 2rem 2.5rem; border-radius: 12px;
+      width: 90%; max-width: 500px; 
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3); 
+      position: relative;
+      color: var(--gray-dark); /* Teks modal HITAM */
+    }
+    .modal-content .form-group input,
+    .modal-content .form-group select {
+        background: #f4f4f4; /* Background input di modal terang */
+        color: var(--gray-dark); /* Teks input di modal HITAM */
+        border-color: #ccc;
+    }
+    .close-btn {
+      color: #aaa; position: absolute; right: 1.5rem; top: 1rem;
+      font-size: 1.75rem; font-weight: bold; cursor: pointer;
+    }
+    .close-btn:hover, .close-btn:focus { color: var(--gray-dark); }
+    .modal-content h2 { color: var(--green); margin-bottom: 1.5rem; }
+    .modal-btn {
+      background: var(--green); color: var(--white); padding: 0.75rem 1.5rem; border: none;
+      border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: 500;
+      width: 100%;
+    }
+
+    /* Footer */
+    .site-footer {
+      text-align: center; padding: 1.5rem;
+      font-size: 0.85rem; color: #a0a0a0; 
+      background: #0a0a0a;
+      margin-top: 2rem; z-index: 5;
+      line-height: 1.8; /* Untuk footer 2 baris */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-animation">
+    <span class="box-symbol"></span>
+    <span class="box-symbol"></span>
+    <span class="box-symbol"></span>
+    <span class="box-symbol"></span>
+    <span class="box-symbol"></span>
+  </div>
+
+  <nav class="navbar">
+    <a href="admin.html" class="logo">Admin<span>Panel</span></a>
+    
+    <div class="profile-dropdown">
+      <button class="profile-trigger" id="profile-trigger-btn">
+        <span id="welcome-name">Memuat...</span> <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
+      </button>
+      <div class="dropdown-content" id="dropdown-content">
+        <div class="profile-info">
+          <div><strong>Nama:</strong> <span id="profile-name">...</span></div>
+          <div><strong>NIS:</strong> <span id="profile-nis">...</span></div>
+          <div><strong>Role:</strong> <span id="profile-role" style="color: var(--accent-color); font-weight: bold;">ADMIN</span></div>
+        </div>
+        <div class="dropdown-links">
+          <a id="logout-btn-new">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-container">
+
+    <div class="card" style="margin-bottom: 2rem;">
+      <div class="card-header">
+        <i class="fas fa-users-cog"></i>
+        <h2>Manajemen Akun</h2>
+      </div>
+      <div class="card-body">
+        
+        <form id="add-user-form" style="display: flex; gap: 1rem; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <div class="form-group" style="flex: 2 1 120px;">
+            <label for="new-nis">NIS (Primary Key)</label>
+            <input type="text" id="new-nis" required>
+          </div>
+          <div class="form-group" style="flex: 3 1 180px;">
+            <label for="new-nama">Nama Lengkap</label>
+            <input type="text" id="new-nama" required>
+          </div>
+          <div class="form-group" style="flex: 2 1 120px;">
+            <label for="new-password">Password</label>
+            <input type="text" id="new-password" placeholder="Min. 4 kar" required>
+          </div>
+          <div class="form-group" style="flex: 1 1 80px;">
+            <label for="new-role">Role</label>
+            <select id="new-role">
+              <option value="siswa">Siswa</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex: 1 1 80px;">
+            <label for="new-tingkatan">Tingkatan</label>
+            <select id="new-tingkatan">
+              <option value="SMP">SMP</option>
+              <option value="SMA">SMA</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex: 1 1 60px;">
+            <label for="new-kelas">Kelas</label>
+            <select id="new-kelas">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" style="height: 42px; margin-bottom: 1rem;">Tambah</button>
+        </form>
+        
+        <div class="form-group" style="border-top: 1px solid var(--glass-border); padding-top: 1.5rem; margin-top: 1.5rem;">
+          <label for="upload-csv-input">Tambah Akun Massal (CSV)</label>
+          <input type="file" id="upload-csv-input" accept=".csv" style="padding: 10px;">
+          <small style="color: var(--text-muted); display: block; margin-top: 5px;">Format: nis,nama,password,role,tingkatan,kelas (Tanpa header)</small>
+        </div>
+
+        <div class="data-table-wrapper" style="margin-top: 1rem;">
+          <table class="data-table" id="user-table">
+            <thead>
+              <tr>
+                <th>NIS (ID)</th>
+                <th>Nama Lengkap</th>
+                <th>Role</th>
+                <th>Tingkatan</th>
+                <th>Kelas</th>
+                <th class="action-cell">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="curriculum-grid">
+      
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-book-open"></i>
+          <h2>Upload Materi</h2>
+        </div>
+        <div class="card-body">
+          <form id="upload-material-form">
+            <div class="form-group">
+              <label for="material-title">Judul Materi</label>
+              <input type="text" id="material-title" required>
+            </div>
+            <div class="form-group">
+              <label for="material-desc">Deskripsi Singkat</label>
+              <textarea id="material-desc" style="min-height: 60px;"></textarea>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+              <div class="form-group" style="flex: 1;">
+                <label for="material-tingkatan">Tingkatan</label>
+                <select id="material-tingkatan">
+                  <option value="SMP">SMP</option>
+                  <option value="SMA">SMA</option>
+                </select>
+              </div>
+              <div class="form-group" style="flex: 1;">
+                <label for="material-kelas">Kelas</label>
+                <select id="material-kelas">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="material-file">Upload File</label>
+              <input type="file" id="material-file" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="material-submit-btn">Upload Materi</button>
+          </form>
+          <hr style="border: 1px solid var(--glass-border); margin: 1.5rem 0;">
+          <h4>Materi Terupload:</h4>
+          <div class="data-table-wrapper" style="max-height: 200px; margin-top: 1rem;">
+            <table class="data-table" id="material-list-table">
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-file-alt"></i>
+          <h2>Upload Soal</h2>
+        </div>
+        <div class="card-body">
+          <form id="upload-exam-form">
+            <div class="form-group">
+              <label for="exam-title">Judul Soal</label>
+              <input type="text" id="exam-title" required>
+            </div>
+             <div class="form-group">
+              <label for="exam-type">Jenis Soal</label>
+              <select id="exam-type">
+                <option value="praktikum">Soal Praktikum</option>
+                <option value="ujian">Soal Ujian</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exam-desc">Deskripsi Singkat</label>
+              <textarea id="exam-desc" style="min-height: 60px;"></textarea>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+              <div class="form-group" style="flex: 1;">
+                <label for="exam-tingkatan">Tingkatan</label>
+                <select id="exam-tingkatan">
+                  <option value="SMP">SMP</option>
+                  <option value="SMA">SMA</option>
+                </select>
+              </div>
+              <div class="form-group" style="flex: 1;">
+                <label for="exam-kelas">Kelas</label>
+                <select id="exam-kelas">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="exam-file">Upload File</label>
+              <input type="file" id="exam-file" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="exam-submit-btn">Upload Soal</button>
+          </form>
+          <hr style="border: 1px solid var(--glass-border); margin: 1.5rem 0;">
+          <h4>Soal Terupload:</h4>
+           <div class="data-table-wrapper" style="max-height: 200px; margin-top: 1rem;">
+            <table class="data-table" id="exam-list-table">
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="edit-user-modal" class="modal-overlay">
+    <div class="modal-content">
+      <span class="close-btn" id="edit-user-cancel">&times;</span>
+      <h2 style="color: var(--green); margin-bottom: 1.5rem;">Edit Data Akun</h2>
+      <form id="edit-user-form">
+        <input type="hidden" id="edit-user-nis">
+        <div class="form-group">
+          <label>NIS (Primary Key)</label>
+          <input type="text" id="edit-nis-display" disabled style="background: #eee; color: #777;">
+        </div>
+        <div class="form-group">
+          <label for="edit-user-nama">Nama Lengkap</label>
+          <input type="text" id="edit-user-nama" required>
+        </div>
+        <div class="form-group">
+          <label for="edit-user-password">Password Baru (Opsional)</label>
+          <input type="text" id="edit-user-password" placeholder="Kosongkan jika tidak ingin ganti">
+        </div>
+        <div class="form-group">
+          <label for="edit-user-role">Role</label>
+          <select id="edit-user-role">
+            <option value="siswa">Siswa</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+         <div style="display: flex; gap: 1rem;">
+          <div class="form-group" style="flex: 1;">
+            <label for="edit-user-tingkatan">Tingkatan</label>
+            <select id="edit-user-tingkatan">
+              <option value="SMP">SMP</option>
+              <option value="SMA">SMA</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="edit-user-kelas">Kelas</label>
+            <select id="edit-user-kelas">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="modal-btn">Simpan Perubahan</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    © 2024 Portal Siswa Informatika. MA PLUS YPI Nurul Hadina.<br>
+    Oleh: Fauzan Reza, S.T (Guru Informatika YPI Nurul Hadina)
+  </footer>
+
+
+  <script src="database.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    // 1. Lindungi Halaman
+    const adminUser = protectPage('admin'); // Hanya 'admin' yang boleh akses
+    if (!adminUser) throw new Error("Akses Ditolak");
+
+    // 2. Set Tampilan Awal (Dropdown Profil)
+    document.getElementById('welcome-name').textContent = `Admin: ${adminUser.nama.split(' ')[0]}`;
+    document.getElementById('profile-name').textContent = adminUser.nama;
+    document.getElementById('profile-nis').textContent = adminUser.nis;
+    document.getElementById('logout-btn-new').onclick = handleLogout;
+
+    // Logika Dropdown Profil
+    const triggerBtn = document.getElementById('profile-trigger-btn');
+    const dropdownContent = document.getElementById('dropdown-content');
+    triggerBtn.onclick = (e) => {
+      e.preventDefault();
+      dropdownContent.classList.toggle('show');
+    };
+    window.onclick = (e) => {
+      if (triggerBtn && dropdownContent && !triggerBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+        dropdownContent.classList.remove('show');
+      }
+    };
+
+    // --- 3. Manajemen Akun ---
+    const userTableBody = document.getElementById('user-table').querySelector('tbody');
+    const addUserForm = document.getElementById('add-user-form');
+
+    function renderUserTable() {
+      const users = getUsers();
+      userTableBody.innerHTML = '';
+      users.forEach(user => {
+        const actionBtns = user.nis === adminUser.nis 
+          ? '<i>(Akun Aktif)</i>' 
+          : `<button class="btn btn-edit" onclick="handleEditUser('${user.nis}')" style="margin-right: 5px; padding: 5px 10px; font-size: 0.85rem;">Edit</button>
+             <button class="btn btn-danger" onclick="handleDeleteUser('${user.nis}')" style="padding: 5px 10px; font-size: 0.85rem;">Hapus</button>`;
+        
+        userTableBody.innerHTML += `
+          <tr>
+            <td>${user.nis}</td>
+            <td>${user.nama}</td>
+            <td>${user.role}</td>
+            <td>${user.tingkatan || 'N/A'}</td>
+            <td>${user.kelas || 'N/A'}</td>
+            <td class="action-cell">${actionBtns}</td>
+          </tr>
+        `;
+      });
+    }
+
+    addUserForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nis = document.getElementById('new-nis').value;
+      const nama = document.getElementById('new-nama').value;
+      const password = document.getElementById('new-password').value;
+      const role = document.getElementById('new-role').value;
+      const tingkatan = document.getElementById('new-tingkatan').value;
+      const kelas = document.getElementById('new-kelas').value;
+
+      if (password.length < 4) {
+        alert('Password minimal 4 karakter.');
+        return;
+      }
+
+      const success = addUser({ nis, nama, password, role, tingkatan, kelas });
+      if (success) {
+        alert('Akun berhasil ditambahkan.');
+        addUserForm.reset();
+        renderUserTable();
+      } else {
+        alert('Gagal! NIS sudah terdaftar.');
+      }
+    });
+
+    function handleDeleteUser(nis) {
+      if (confirm(`Yakin ingin menghapus pengguna dengan NIS ${nis}?`)) {
+        deleteUser(nis);
+        renderUserTable();
+      }
+    }
+
+    // --- 4. Logika Upload CSV ---
+    document.getElementById('upload-csv-input').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const text = event.target.result;
+        const rows = text.split('\n').filter(row => row.trim() !== '');
+
+        let successCount = 0;
+        let failCount = 0;
+        let failedNis = [];
+
+        rows.forEach(row => {
+          const cols = row.split(',').map(col => col.trim());
+          if (cols.length === 6) { 
+            const [nis, nama, password, role, tingkatan, kelas] = cols;
+            
+            if (nis && nama && password && (role === 'siswa' || role === 'admin') && (tingkatan === 'SMP' || tingkatan === 'SMA') && (kelas === '1' || kelas === '2' || kelas === '3')) {
+              const success = addUser({ nis, nama, password, role, tingkatan, kelas });
+              if (success) {
+                successCount++;
+              } else {
+                failCount++;
+                failedNis.push(nis);
+              }
+            } else {
+              failCount++;
+              failedNis.push(cols[0] || 'DATA_TIDAK_LENGKAP');
+            }
+          }
+        });
+
+        alert(`Upload Selesai.\nBerhasil ditambah: ${successCount}\nGagal (NIS duplikat/data salah): ${failCount}`);
+        if (failCount > 0) {
+          console.warn('NIS yang gagal diimpor:', failedNis);
+        }
+        
+        renderUserTable();
+        e.target.value = null;
+      };
+      reader.readAsText(file);
+    });
+
+    // --- 5. Logika Modal Edit User ---
+    const editModal = document.getElementById('edit-user-modal');
+    const editForm = document.getElementById('edit-user-form');
+    const editUserNis = document.getElementById('edit-user-nis');
+    const editNisDisplay = document.getElementById('edit-nis-display');
+    const editUserName = document.getElementById('edit-user-nama');
+    const editUserPassword = document.getElementById('edit-user-password');
+    const editUserRole = document.getElementById('edit-user-role');
+    const editUserTingkatan = document.getElementById('edit-user-tingkatan');
+    const editUserKelas = document.getElementById('edit-user-kelas');
+
+    function handleEditUser(nis) {
+      const user = findUserByNIS(nis);
+      if (!user) return alert('User tidak ditemukan!');
+
+      editUserNis.value = user.nis;
+      editNisDisplay.value = user.nis;
+      editUserName.value = user.nama;
+      editUserRole.value = user.role;
+      editUserTingkatan.value = user.tingkatan;
+      editUserKelas.value = user.kelas;
+      editUserPassword.value = '';
+      
+      editModal.style.display = 'flex'; // Menggunakan flex untuk centering
+    }
+
+    function closeEditModal() {
+      editModal.style.display = 'none';
+      editForm.reset();
+    }
+    document.getElementById('edit-user-cancel').onclick = closeEditModal;
+    // Juga tutup jika klik di luar modal
+    editModal.onclick = (e) => {
+        if (e.target.classList.contains('modal-overlay')) {
+            closeEditModal();
+        }
+    };
+
+    editForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const nis = editUserNis.value;
+      const newNama = editUserName.value;
+      const newPassword = editUserPassword.value;
+      const newRole = editUserRole.value;
+      const newTingkatan = editUserTingkatan.value;
+      const newKelas = editUserKelas.value;
+
+      let users = getUsers();
+      let user = users.find(u => u.nis === nis);
+
+      if (user) {
+        user.nama = newNama;
+        user.role = newRole;
+        user.tingkatan = newTingkatan;
+        user.kelas = newKelas;
+        
+        if (newPassword.trim() !== '') {
+          if (newPassword.trim().length < 4) {
+            alert('Password baru minimal 4 karakter.');
+            return;
+          }
+          user.password = newPassword.trim();
+        }
+
+        saveUsers(users);
+        alert('Data pengguna berhasil diperbarui.');
+        closeEditModal();
+        renderUserTable();
+      } else {
+        alert('Gagal memperbarui. User tidak ditemukan.');
+      }
+    });
+
+    // --- 6. Fungsi Upload (Generic) ---
+    function readFileAsBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // --- 7. Logika Upload Materi ---
+    const materialForm = document.getElementById('upload-material-form');
+    const materialListTable = document.getElementById('material-list-table').querySelector('tbody');
+
+    function renderMaterialList() {
+      const materials = getMaterials();
+      materialListTable.innerHTML = '';
+      materials.reverse().forEach(m => {
+        materialListTable.innerHTML += `
+          <tr>
+            <td>
+              <strong>${m.title}</strong> [${m.tingkatan} - ${m.kelas}]<br>
+              <small>${m.fileName}</small>
+            </td>
+            <td class="action-cell">
+              <button class="btn btn-danger" onclick="handleDeleteMaterial(${m.id})" style="padding: 5px 10px; font-size: 0.85rem;">Hapus</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    materialForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('material-title').value;
+      const description = document.getElementById('material-desc').value;
+      const fileInput = document.getElementById('material-file');
+      const tingkatan = document.getElementById('material-tingkatan').value;
+      const kelas = document.getElementById('material-kelas').value;
+      const file = fileInput.files[0];
+      const btn = document.getElementById('material-submit-btn');
+
+      if (!file) { alert('Silakan pilih file.'); return; }
+      btn.disabled = true; btn.textContent = 'Mengupload...';
+
+      try {
+        const fileData = await readFileAsBase64(file);
+        addMaterial({
+          id: Date.now(), title: title, description: description,
+          fileName: file.name, fileData: fileData,
+          tingkatan: tingkatan, kelas: kelas
+        });
+        alert('Materi berhasil di-upload!');
+        materialForm.reset();
+        renderMaterialList();
+      } catch (error) {
+        console.error(error);
+        alert('Gagal mengupload file.');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Upload Materi';
+      }
+    });
+
+    function handleDeleteMaterial(id) {
+       if (confirm(`Yakin ingin menghapus materi ini?`)) {
+        deleteMaterial(id);
+        renderMaterialList();
+      }
+    }
+
+    // --- 8. Logika Upload Soal ---
+    const examForm = document.getElementById('upload-exam-form');
+    const examListTable = document.getElementById('exam-list-table').querySelector('tbody');
+
+    function renderExamList() {
+      const exams = getExams();
+      examListTable.innerHTML = '';
+      exams.reverse().forEach(ex => {
+        const typeLabel = ex.type === 'praktikum' ? 'Praktikum' : 'Ujian';
+        examListTable.innerHTML += `
+          <tr>
+            <td>
+              <strong>${ex.title}</strong> [${typeLabel} - ${ex.tingkatan} - ${ex.kelas}]<br>
+              <small>${ex.fileName}</small>
+            </td>
+            <td class="action-cell">
+              <button class="btn btn-danger" onclick="handleDeleteExam(${ex.id})" style="padding: 5px 10px; font-size: 0.85rem;">Hapus</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    examForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('exam-title').value;
+      const type = document.getElementById('exam-type').value;
+      const description = document.getElementById('exam-desc').value;
+      const fileInput = document.getElementById('exam-file');
+      const tingkatan = document.getElementById('exam-tingkatan').value;
+      const kelas = document.getElementById('exam-kelas').value;
+      const file = fileInput.files[0];
+      const btn = document.getElementById('exam-submit-btn');
+      
+      if (!file) { alert('Silakan pilih file.'); return; }
+      btn.disabled = true; btn.textContent = 'Mengupload...';
+
+      try {
+        const fileData = await readFileAsBase64(file);
+        addExam({
+          id: Date.now(), title: title, type: type, description: description,
+          fileName: file.name, fileData: fileData,
+          tingkatan: tingkatan, kelas: kelas
+        });
+        alert('Soal berhasil di-upload!');
+        examForm.reset();
+        renderExamList();
+      } catch (error) {
+        console.error(error);
+        alert('Gagal mengupload file.');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Upload Soal';
+      }
+    });
+
+     function handleDeleteExam(id) {
+       if (confirm(`Yakin ingin menghapus soal ini?`)) {
+        deleteExam(id);
+        renderExamList();
+      }
+    }
+
+    // --- Panggil render awal ---
+    renderUserTable();
+    renderMaterialList();
+    renderExamList();
+  </script>
+</body>
+</html>
