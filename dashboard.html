@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard - Portal Siswa</title>
+  <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+</head>
+<body>
+
+  <div class="bg-animation">
+    <span class="box-symbol"></span>
+    <span class="box-symbol"></span>
+    <span class="box-symbol"></span>
+    <span class="box-symbol"></span>
+    <span class="box-symbol"></span>
+  </div>
+
+  <nav class="navbar">
+    <a href="dashboard.html" class="logo">PORTAL WEB INFORMATIKA<span> SISWA YPI NURUL HADINA</span></a>
+    
+    <div class="profile-dropdown">
+      <button class="profile-trigger" id="profile-trigger-btn">
+        <span id="welcome-name">Memuat...</span> <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
+      </button>
+      <div class="dropdown-content" id="dropdown-content">
+        <div class="profile-info">
+          <div><strong>Nama:</strong> <span id="profile-name">...</span></div>
+          <div><strong>NIS:</strong> <span id="profile-nis">...</span></div>
+          <div><strong>Kelas:</strong> <span id="profile-kelas">...</span></div>
+        </div>
+        <div class="dropdown-links">
+          <a id="change-password-btn-new">Ganti Password</a>
+          <a id="logout-btn-new">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sub-nav">
+    <a href="dashboard.html" class="active">Dashboard Utama</a>
+    <a href="ksma.html" id="nav-kurikulum-sma">Kurikulum SMA</a>
+    <a href="ksmp.html" id="nav-kurikulum-smp">Kurikulum SMP</a>
+    <a href="soal-praktikum.html">Praktikum Online</a>
+    <a href="soal-ujian.html">Ujian Virtual</a>
+    <a href="survey-harian.html">Survey Harian</a>
+    <a href="survey-siswa.html">Survey Siswa</a>
+  </div>
+
+  <div class="main-container">
+
+    <div class="welcome-banner">
+      <h1 id="welcome-heading">Selamat Datang!</h1>
+      <p>Ini adalah dashboard utama Anda. Silakan pilih fitur yang ingin Anda akses di bawah ini.
+      </p>
+    </div>
+
+    <div class="curriculum-grid"> 
+      
+      <a href="#" id="materi-card-link" class="feature-card" style="animation-delay: 0.1s;">
+        <i class="fas fa-book-open"></i>
+        <h3>Materi Pembelajaran</h3>
+        <p>Akses semua materi, catatan, dan modul pelajaran.</p>
+      </a>
+
+      <a href="soal-praktikum.html" class="feature-card" style="animation-delay: 0.2s;">
+        <i class="fas fa-laptop-code"></i>
+        <h3>Praktikum Online</h3>
+        <p>Lihat semua tugas dan panduan praktikum.</p>
+      </a>
+
+      <a href="soal-ujian.html" class="feature-card" style="animation-delay: 0.3s;">
+        <i class="fas fa-file-alt"></i>
+        <h3>Ujian Virtual</h3>
+        <p>Akses bank soal dan persiapan ujian Anda.</p>
+      </a>
+
+      <a href="javascript:alert('Fitur Laporan Nilai sedang dalam pengembangan.');" class="feature-card disabled-link" style="animation-delay: 0.4s;">
+        <i class="fas fa-chart-bar"></i>
+        <h3>Laporan Nilai</h3>
+        <p>Lihat rekap dan riwayat nilai Anda di sini.</p>
+      </a>
+
+      <a href="survey-harian.html" class="feature-card" style="animation-delay: 0.5s;">
+        <i class="fas fa-poll"></i>
+        <h3>Survey Harian</h3>
+        <p>Isi absensi dan kuesioner harian Anda di sini.</p>
+      </a>
+
+      <a href="survey-siswa.html" class="feature-card" style="animation-delay: 0.6s;">
+        <i class="fas fa-smile"></i>
+        <h3>Survey Siswa</h3>
+        <p>Berikan masukan dan kepuasan Anda.</p>
+      </a>
+
+    </div>
+    
+  </div>
+
+  <section class="about-section">
+    <h2>Tentang Platform Ini</h2>
+    <p>Selamat datang di Portal Siswa Informatika YPI Nurul Hadina.</p>
+    <p>Ini adalah platform sederhana yang kami bangun untuk memudahkan proses pembelajaran, berbagi materi, dan mengelola tugas. Manfaatkan teknologi ini untuk mendukung perjalanan belajar Anda.</p>
+  </section>
+
+  <div id="passwordModal" class="modal-overlay">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Ganti Password</h2>
+      <div id="password-alert-error" class="alert alert-danger"></div>
+      <div id="password-alert-success" class="alert alert-success"></div>
+      <form id="passwordForm">
+        <div class="form-group"><label for="oldPassword">Password Lama</label><input type="password" id="old-password" required /></div>
+        <div class="form-group"><label for="newPassword">Password Baru</label><input type="password" id="new-password" required /></div>
+        <div class="form-group"><label for="confirmPassword">Konfirmasi Password Baru</label><input type="password" id="confirm-password" required /></div>
+        <button type="submit" class="modal-btn">Ubah Password</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    &copy; 2024 Portal Siswa Informatika. MA PLUS YPI Nurul Hadina.<br>Oleh: <strong>Fauzan Reza, S.T</strong> (Guru Informatika  <strong>YPI Nurul Hadina</strong>)
+  </footer>
+
+  <script src="database.js"></script>
+  <script src="auth.js"></script>
+  
+  <script>
+    // 1. Lindungi Halaman
+const studentUser = protectPage('siswa');
+if (!studentUser) { 
+  throw new Error("Akses Ditolak."); 
+}
+
+// [LOGIKA DISABLE LINK]
+const linkSMA = document.getElementById('nav-kurikulum-sma');
+const linkSMP = document.getElementById('nav-kurikulum-smp');
+
+if (studentUser.tingkatan === 'SMA') {
+  if (linkSMP) { 
+    linkSMP.classList.add('disabled-link'); 
+    linkSMP.href = "javascript:void(0)"; 
+  }
+} else if (studentUser.tingkatan === 'SMP') {
+  if (linkSMA) { 
+    linkSMA.classList.add('disabled-link'); 
+    linkSMA.href = "javascript:void(0)"; 
+  }
+}
+
+// [LOGIKA LINK PINTAR]
+const materiCardLink = document.getElementById('materi-card-link');
+if (studentUser.tingkatan === 'SMA') {
+  materiCardLink.href = 'ksma.html';
+} else if (studentUser.tingkatan === 'SMP') {
+  materiCardLink.href = 'ksmp.html';
+}
+
+// 2. Set Tampilan Awal & Isi Info Profil Dropdown
+document.getElementById('welcome-name').textContent = `Halo, ${studentUser.nama.split(' ')[0]}`;
+document.getElementById('profile-name').textContent = studentUser.nama;
+document.getElementById('profile-nis').textContent = studentUser.nis;
+document.getElementById('profile-kelas').textContent = `${studentUser.tingkatan} / Kelas ${studentUser.kelas}`;
+
+// Set Welcome Banner
+document.getElementById('welcome-heading').textContent = `Selamat Datang, ${studentUser.nama.split(' ')[0]}!`;
+
+// 3. Logika Dropdown Profile (PERBAIKAN UTAMA)
+const triggerBtn = document.getElementById('profile-trigger-btn');
+const dropdownContent = document.getElementById('dropdown-content');
+
+triggerBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  dropdownContent.classList.toggle('show');
+});
+
+// Close dropdown saat klik di luar
+document.addEventListener('click', (e) => {
+  if (!triggerBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+    dropdownContent.classList.remove('show');
+  }
+});
+
+// 4. Logika Logout
+document.getElementById('logout-btn-new').addEventListener('click', (e) => {
+  e.preventDefault();
+  handleLogout();
+});
+
+// 5. Logika Ganti Password
+const pwModal = document.getElementById('passwordModal');
+const pwForm = document.getElementById('passwordForm');
+const pwBtnOpen = document.getElementById('change-password-btn-new'); 
+const pwBtnClose = document.querySelector('#passwordModal .close-btn');
+const alertError = document.getElementById('password-alert-error');
+const alertSuccess = document.getElementById('password-alert-success');
+
+function openPasswordModal() {
+  alertError.style.display = 'none';
+  alertSuccess.style.display = 'none';
+  pwForm.reset();
+  pwModal.style.display = 'flex';
+}
+
+function closePasswordModal() {
+  pwModal.style.display = 'none';
+}
+
+pwBtnOpen.addEventListener('click', (e) => {
+  e.preventDefault();
+  openPasswordModal();
+});
+
+pwBtnClose.addEventListener('click', closePasswordModal);
+
+// Close modal saat klik di luar
+pwModal.addEventListener('click', (e) => {
+  if (e.target === pwModal) closePasswordModal();
+});
+
+function showPasswordAlert(type, message) {
+  const alertEl = (type === 'error') ? alertError : alertSuccess;
+  const otherEl = (type === 'error') ? alertSuccess : alertError;
+  otherEl.style.display = 'none';
+  alertEl.textContent = message;
+  alertEl.style.display = 'block';
+}
+
+pwForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const oldPass = document.getElementById('old-password').value.trim();
+  const newPass = document.getElementById('new-password').value.trim();
+  const confirmPass = document.getElementById('confirm-password').value.trim();
+  
+  // Validasi
+  if (!oldPass || !newPass || !confirmPass) {
+    return showPasswordAlert('error', 'Semua kolom harus diisi!');
+  }
+  
+  if (newPass.length < 4) {
+    return showPasswordAlert('error', 'Password baru minimal 4 karakter!');
+  }
+  
+  if (newPass !== confirmPass) {
+    return showPasswordAlert('error', 'Password baru dan konfirmasi tidak cocok!');
+  }
+  
+  // Cari user di database
+  const users = getUsers();
+  const currentUserData = users.find(u => u.nis === studentUser.nis);
+  
+  if (!currentUserData) {
+    return showPasswordAlert('error', 'Gagal menemukan data pengguna!');
+  }
+  
+  if (currentUserData.password !== oldPass) {
+    return showPasswordAlert('error', 'Password lama salah!');
+  }
+  
+  // Update password
+  currentUserData.password = newPass;
+  saveUsers(users);
+  
+  showPasswordAlert('success', 'Password berhasil diperbarui!');
+  pwForm.reset();
+  
+  setTimeout(() => {
+    closePasswordModal();
+  }, 2000);
+});
+  </script>
+</body>
+</html>
