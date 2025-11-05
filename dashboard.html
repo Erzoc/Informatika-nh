@@ -40,7 +40,7 @@
 
   <div class="sub-nav">
     <a href="dashboard.html" class="active">Dashboard Utama</a>
-    <a href="ksma.html" id="nav-kurikulum-sma">Kurikulum SMA</a>
+    <a href="kelas-sma.html" id="nav-kurikulum-sma">Kurikulum SMA</a>
     <a href="ksmp.html" id="nav-kurikulum-smp">Kurikulum SMP</a>
     <a href="soal-praktikum.html">Praktikum Online</a>
     <a href="soal-ujian.html">Ujian Virtual</a>
@@ -152,7 +152,7 @@ if (studentUser.tingkatan === 'SMA') {
 // [LOGIKA LINK PINTAR]
 const materiCardLink = document.getElementById('materi-card-link');
 if (studentUser.tingkatan === 'SMA') {
-  materiCardLink.href = 'ksma.html';
+  materiCardLink.href = 'kelas-sma.html';
 } else if (studentUser.tingkatan === 'SMP') {
   materiCardLink.href = 'ksmp.html';
 }
