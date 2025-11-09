@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Praktikum Online - Portal Siswa</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    :root {
+      --bg-color: #0a0a23;
+      --bg-gradient: linear-gradient(160deg, #3a0d6d, #0a0a23, #0b2f4f);
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(0, 229, 255, 0.2);
+      --text-color: #f0f0f0;
+      --text-muted: #a0a0a0;
+      --accent-color: #00e5ff;
+      --accent-color-hover: #9f2fff;
+      --success-color: #00c853;
+      --error-color: #ff3d00;
+      --card-bg: rgba(10, 10, 35, 0.7);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-color);
+      overflow-x: hidden;
+      min-height: 100vh;
+      padding-bottom: 60px; /* Ruang untuk footer */
+    }
+    #particle-network {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    .navbar {
+      position: fixed; top: 0; left: 0;
+      width: 100%; display: flex;
+      justify-content: space-between; align-items: center;
+      padding: 1rem 2rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 100;
+    }
+    .navbar .logo {
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--accent-color); text-decoration: none;
+    }
+    .navbar .logo span {
+      font-size: 0.8rem; font-weight: 300;
+      color: var(--text-muted); display: block; line-height: 1;
+    }
+    .profile-dropdown { position: relative; }
+    .profile-trigger {
+      background: var(--accent-color); color: var(--bg-color);
+      border: none; padding: 0.6rem 1.2rem;
+      border-radius: 20px; cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600; font-size: 0.9rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+    .profile-trigger:hover {
+      background: var(--accent-color-hover); color: var(--text-color);
+    }
+    .dropdown-content {
+      display: none; position: absolute;
+      right: 0; top: calc(100% + 10px);
+      background: var(--card-bg);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px; min-width: 280px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      z-index: 101; overflow: hidden;
+    }
+    .dropdown-content.show { display: block; }
+    .profile-info { padding: 1rem; border-bottom: 1px solid var(--glass-border); }
+    .profile-info div { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .profile-info div strong { color: var(--text-color); margin-right: 0.5rem; }
+    .dropdown-menu a {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.8rem 1rem; text-decoration: none;
+      color: var(--text-color); font-size: 0.9rem;
+      transition: background-color 0.2s ease;
+    }
+    .dropdown-menu a:hover { background-color: var(--glass-border); }
+    .dropdown-menu a:last-child { color: var(--error-color); }
+    
+    .main-content {
+      position: relative; z-index: 2;
+      max-width: 1200px; margin: 0 auto;
+      padding: 100px 2rem 2rem 2rem;
+    }
+    h1 {
+      font-size: 2.5rem; font-weight: 600;
+      color: var(--accent-color);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .subtitle {
+      font-size: 1.1rem; color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* 2 Kolom */
+      gap: 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .card-grid { grid-template-columns: 1fr; } /* 1 Kolom di HP */
+    }
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--text-color);
+    }
+    .card h3 { 
+      font-size: 1.25rem; font-weight: 600; 
+      margin-bottom: 0.5rem; color: var(--text-color); 
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .card h3 i { font-size: 1rem; color: var(--accent-color); margin-bottom: 0; }
+    .card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+    
+    /* ==================================
+      CSS BARU: Grid Pilihan Soal (di dalam card kiri)
+      ==================================
+    */
+    .selection-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr; /* 3 Kolom */
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .selection-card {
+      display: block;
+      text-decoration: none;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .selection-card:hover {
+      background: var(--glass-border);
+      border-color: var(--accent-color);
+      transform: translateY(-3px);
+    }
+    .selection-card .icon {
+      font-size: 1.5rem;
+      color: var(--accent-color);
+    }
+    .selection-card h4 {
+      color: var(--text-color);
+      font-size: 1rem;
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+    .selection-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+      line-height: 1.3;
+    }
+    @media (max-width: 500px) {
+      .selection-grid {
+        grid-template-columns: 1fr 1fr; /* 2 Kolom di HP kecil */
+      }
+    }
+    /* ================================== */
+    
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label {
+      display: block; font-size: 0.9rem;
+      font-weight: 500; color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%; padding: 0.8rem 1rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px; color: var(--text-color);
+      font-family: 'Poppins', sans-serif; font-size: 1rem;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none; border-color: var(--accent-color);
+    }
+    .btn {
+      width: 100%; padding: 0.8rem 1rem;
+      background: var(--accent-color); color: var(--bg-color);
+      border: none; border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .btn:hover {
+      background: var(--accent-color-hover); color: var(--text-color);
+    }
+    .btn:disabled {
+      background: var(--text-muted); cursor: not-allowed;
+    }
+    .modal-overlay {
+      display: none; position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 200;
+      justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      padding: 2rem; border-radius: 12px;
+      width: 90%; max-width: 500px;
+      position: relative;
+    }
+    .close-modal {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: 1.5rem; color: var(--text-muted);
+      cursor: pointer;
+    }
+    .modal-content h2 {
+      color: var(--accent-color); margin-bottom: 1.5rem; text-align: center;
+    }
+    .alert {
+      display: none; padding: 0.8rem 1rem;
+      border-radius: 8px; margin-bottom: 1rem;
+      font-size: 0.9rem; background: var(--error-color);
+      color: var(--white);
+    }
+    .alert.success { background: var(--success-color); }
+    .site-footer {
+      position: fixed; bottom: 0; left: 0;
+      width: 100%; background: rgba(10, 10, 35, 0.8);
+      border-top: 1px solid var(--glass-border);
+      backdrop-filter: blur(5px);
+      padding: 1rem; text-align: center;
+      color: var(--text-muted); font-size: 0.85rem;
+      z-index: 10;
+    }
+  </style>
+  
+  <script src="js/database.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    protectPage('siswa');
+  </script>
+</head>
+<body>
+
+  <canvas id="particle-network"></canvas>
+
+  <nav class="navbar">
+    <a href="dashboard.html" class="logo">PORTAL WEB INFORMATIKA<span> SISWA YPI NURUL HADINA</span></a>
+    
+    <div class="profile-dropdown">
+      <button class="profile-trigger" id="profile-trigger-btn">
+        <span id="welcome-name">Memuat...</span> <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
+      </button>
+      <div class="dropdown-content" id="dropdown-content">
+        <div class="profile-info">
+          <div><strong>Nama:</strong> <span id="profile-name">...</span></div>
+          <div><strong>NIS:</strong> <span id="profile-nis">...</span></div>
+          <div><strong>Kelas:</strong> <span id="profile-kelas">...</span></div>
+        </div>
+        <div class="dropdown-menu">
+          <a href="#" id="change-password-btn"><i class="fas fa-key"></i> Ganti Password</a>
+          <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <h1>Praktikum Online</h1>
+    <p class="subtitle">
+      Langkah 1 : Pilih soal praktikum Anda. Langkah 2: Kumpulkan jawaban Anda di formulir.
+    </p>
+    
+    <div class="card-grid">
+    
+      <div class="card">
+        <h3><i class="fas fa-tasks"></i>  Langkah 1 :<br> Buka Soal Praktikum dan Klik [Make A Copy]</h3>
+        <p>
+          Pilih tingkatan dan kelas Anda. Soal akan terbuka di tab baru (Google Sheet, Google Doc, atau link lainnya).
+        </p>
+        
+        <div class="selection-grid">
+          
+          <a href="LINK_SOAL_SMA_1" target="_blank" class="selection-card">
+            <i class="fas fa-vial-virtual icon"></i>
+            <h4>SMA - Kelas 1</h4>
+            <p>Soal Praktikum</p>
+          </a>
+          <a href="LINK_SOAL_SMA_2" target="_blank" class="selection-card">
+            <i class="fas fa-vial-virtual icon"></i>
+            <h4>SMA - Kelas 2</h4>
+            <p>Soal Praktikum</p>
+          </a>
+          <a href="LINK_SOAL_SMA_3" target="_blank" class="selection-card">
+            <i class="fas fa-vial-virtual icon"></i>
+            <h4>SMA - Kelas 3</h4>
+            <p>Soal Praktikum</p>
+          </a>
+          
+          <a href="LINK_SOAL_SMP_1" target="_blank" class="selection-card">
+            <i class="fas fa-laptop-code icon"></i>
+            <h4>SMP - Kelas 1</h4>
+            <p>Soal Praktikum</p>
+          </a>
+          <a href="https://docs.google.com/spreadsheets/d/1NiMXuyJR3iAD3dZmBUuqa2ONmlGOrWOq68-0Jy2FQYs/copy" target="_blank" class="selection-card">
+            <i class="fas fa-laptop-code icon"></i>
+            <h4>SMP - Kelas 2</h4>
+            <p>Soal Praktikum</p>
+          </a>
+          <a href="https://docs.google.com/spreadsheets/d/1AdssaIcibZuaqbzq-R8WmsfJOdkEEpkwGKtwUVvvVV8/copy" target="_blank" class="selection-card">
+            <i class="fas fa-laptop-code icon"></i>
+            <h4>SMP - Kelas 3</h4>
+            <p>Soal Praktikum</p>
+          </a>
+          
+        </div>
+      </div>
+      
+      <div class="card">
+        <h3><i class="fas fa-upload"></i> Langkah 2: Kumpulkan Jawaban</h3>
+        
+        <div class="alert" id="praktikum-alert-error" style="margin-top: 1rem;"></div>
+        <div class="alert success" id="praktikum-alert-success" style="margin-top: 1rem;"></div>
+
+        <form id="praktikum-form" style="margin-top: 1rem;">
+          
+          <div class="form-group">
+            <label for="praktikum-judul">Judul Praktikum</label>
+            <input type="text" id="praktikum-judul" placeholder="Contoh: Praktikum HTML Dasar" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="praktikum-link">Link Jawaban Anda</label>
+            <input type="url" id="praktikum-link" placeholder="https://docs.google.com/..." required>
+            <small style="color: var(--text-muted); font-size: 0.8rem; margin-top: 5px; display: block;">
+              (Bisa link Google Doc, GitHub, Replit, dll.)
+            </small>
+          </div>
+          
+          <div class="form-group">
+            <label for="praktikum-komentar">Komentar (Opsional)</label>
+            <textarea id="praktikum-komentar" rows="3" placeholder="Tulis komentar atau catatan untuk guru..."></textarea>
+          </div>
+          
+          <button type="submit" class="btn" id="praktikum-submit-btn">Kumpulkan Jawaban</button>
+          
+        </form>
+      </div>
+      
+    </div>
+    
+  </main>
+
+  <div class="modal-overlay" id="password-modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Ganti Password</h2>
+      <form id="password-form">
+        <div class="alert" id="password-alert-error"></div>
+        <div class="alert success" id="password-alert-success"></div>
+        <div class="form-group">
+          <label for="old-password">Password Lama</label>
+          <input type="password" id="old-password" required>
+        </div>
+        <div class="form-group">
+          <label for="new-password">Password Baru</label>
+          <input type="password" id="new-password" required>
+        </div>
+        <div class="form-group">
+          <label for="confirm-password">Konfirmasi Password Baru</label>
+          <input type="password" id="confirm-password" required>
+        </div>
+        <button type="submit" class="btn">Simpan Perubahan</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2025 Portal Web Informatika - YPI Nurul Hadina. Didesain oleh Administrator.</p>
+  </footer>
+
+  <script id="particle-script">
+    (function() {
+      const canvas = document.getElementById('particle-network');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = window.innerWidth, height = window.innerHeight;
+      canvas.width = width; canvas.height = height;
+      let particles = [];
+      const particleCount = 100, connectDistance = 150, mouse = { x: null, y: null, radius: 100 };
+      window.addEventListener('resize', () => {
+        width = window.innerWidth; height = window.innerHeight;
+        canvas.width = width; canvas.height = height;
+      });
+      window.addEventListener('mousemove', (event) => {
+        mouse.x = event.x; mouse.y = event.y;
+      });
+      window.addEventListener('mouseout', () => {
+        mouse.x = null; mouse.y = null;
+      });
+      class Particle {
+        constructor() {
+          this.x = Math.random() * width; this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5;
+          this.radius = 2.5; this.color = 'rgba(0, 229, 255, 0.7)';
+        }
+        update() {
+          if (this.x < 0 || this.x > width) this.vx = -this.vx;
+          if (this.y < 0 || this.y > height) this.vy = -this.vy;
+          this.x += this.vx; this.y += this.vy;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = this.color; ctx.fill();
+        }
+      }
+      function init() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+      }
+      function connect() {
+        for (let a = 0; a < particles.length; a++) {
+          for (let b = a + 1; b < particles.length; b++) {
+            const dx = particles[a].x - particles[b].x, dy = particles[a].y - particles[b].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < connectDistance) {
+              const opacity = 1 - (distance / connectDistance);
+              ctx.strokeStyle = `rgba(0, 229, 255, ${opacity * 0.3})`;
+              ctx.lineWidth = 1.5; ctx.beginPath();
+              ctx.moveTo(particles[a].x, particles[a].y);
+              ctx.lineTo(particles[b].x, particles[b].y); ctx.stroke();
+            }
+          }
+          if (mouse.x) {
+            const dx = particles[a].x - mouse.x, dy = particles[a].y - mouse.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < mouse.radius) {
+              const opacity = 1 - (distance / mouse.radius);
+              ctx.strokeStyle = `rgba(159, 47, 255, ${opacity * 0.5})`;
+              ctx.lineWidth = 2; ctx.beginPath();
+              ctx.moveTo(particles[a].x, particles[a].y);
+              ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+            }
+          }
+        }
+      }
+      function animate() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        connect(); requestAnimationFrame(animate);
+      }
+      init(); animate();
+    })();
+  </script>
+  
+  <script id="app-logic-script">
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentUser = getSession();
+      if (!currentUser) { console.error("User tidak ditemukan."); return; }
+      const welcomeName = document.getElementById('welcome-name');
+      const profileName = document.getElementById('profile-name');
+      const profileNis = document.getElementById('profile-nis');
+      const profileKelas = document.getElementById('profile-kelas');
+      const triggerBtn = document.getElementById('profile-trigger-btn');
+      const dropdownContent = document.getElementById('dropdown-content');
+      const logoutBtn = document.getElementById('logout-btn');
+      const changePwBtn = document.getElementById('change-password-btn');
+      const pwModal = document.getElementById('password-modal');
+      const pwForm = document.getElementById('password-form');
+      const closePwModalBtn = document.querySelector('.close-modal');
+      const alertError = document.getElementById('password-alert-error');
+      const alertSuccess = document.getElementById('password-alert-success');
+      if (welcomeName) welcomeName.textContent = currentUser.nama;
+      if (profileName) profileName.textContent = currentUser.nama;
+      if (profileNis) profileNis.textContent = currentUser.nis;
+      if (profileKelas) profileKelas.textContent = `${currentUser.tingkatan} - ${currentUser.kelas}`;
+      if (triggerBtn && dropdownContent) {
+          triggerBtn.addEventListener('click', () => dropdownContent.classList.toggle('show'));
+          window.addEventListener('click', (e) => {
+              if (e.target !== triggerBtn && !triggerBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                  dropdownContent.classList.remove('show');
+              }
+          });
+      }
+      if (logoutBtn) logoutBtn.addEventListener('click', (e) => { e.preventDefault(); handleLogout(); });
+      function openPasswordModal() { if (pwModal) pwModal.style.display = 'flex'; }
+      function closePasswordModal() {
+          if (pwModal) pwModal.style.display = 'none';
+          if (pwForm) pwForm.reset();
+          if (alertError) alertError.style.display = 'none';
+          if (alertSuccess) alertSuccess.style.display = 'none';
+      }
+      function showPasswordAlert(type, message) {
+        const alertEl = (type === 'error') ? alertError : alertSuccess;
+        const otherEl = (type === 'error')? alertSuccess : alertError;
+        if (otherEl) otherEl.style.display = 'none';
+        if (alertEl) { alertEl.textContent = message; alertEl.style.display = 'block'; }
+      }
+      if (changePwBtn) changePwBtn.addEventListener('click', openPasswordModal);
+      if (closePwModalBtn) closePwModalBtn.addEventListener('click', closePasswordModal);
+      if (pwForm) {
+          pwForm.addEventListener('submit', async (e) => {
+              e.preventDefault();
+              const oldPass = document.getElementById('old-password').value;
+              const newPass = document.getElementById('new-password').value;
+              const confirmPass = document.getElementById('confirm-password').value;
+              if (newPass.length < 4) return showPasswordAlert('error', 'Password baru minimal 4 karakter.');
+              if (newPass !== confirmPass) return showPasswordAlert('error', 'Password baru dan konfirmasi tidak cocok.');
+              showPasswordAlert('success', 'Memverifikasi...');
+              const findResult = await findUserByNIS(currentUser.nis);
+              if (!findResult || findResult.status !== "success" || !findResult.user) {
+                  return showPasswordAlert('error', 'Gagal mengambil data Anda dari server.');
+              }
+              const currentUserData = findResult.user;
+              if (currentUserData.password !== oldPass) {
+                  return showPasswordAlert('error', 'Password lama salah.');
+              }
+              // Ganti 'updateUserPassword' dengan fungsi yang ada di database.js Anda
+              // const updateResult = await updateUserPassword(currentUser.nis, newPass); 
+              const updateResult = { status: "success" }; // Placeholder
+              if (updateResult.status === "success") {
+                  showPasswordAlert('success', 'Password berhasil diperbarui.');
+                  pwForm.reset();
+                  setTimeout(closePasswordModal, 2000);
+              } else {
+                  showPasswordAlert('error', updateResult.message || 'Gagal memperbarui password.');
+              }
+          });
+      }
+      
+      /* ==================================
+        SKRIP KHUSUS UNTUK FORM PRAKTIKUM
+        ==================================
+      */
+      const praktikumForm = document.getElementById('praktikum-form');
+      const submitBtn = document.getElementById('praktikum-submit-btn');
+      const praktikumAlertError = document.getElementById('praktikum-alert-error');
+      const praktikumAlertSuccess = document.getElementById('praktikum-alert-success');
+      
+      function showPraktikumAlert(type, message) {
+        const alertEl = (type === 'error') ? praktikumAlertError : praktikumAlertSuccess;
+        const otherEl = (type === 'error') ? praktikumAlertSuccess : praktikumAlertError;
+        if (otherEl) otherEl.style.display = 'none';
+        if (alertEl) {
+          alertEl.textContent = message;
+          alertEl.style.display = 'block';
+        }
+      }
+
+      if (praktikumForm) {
+        praktikumForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const judul = document.getElementById('praktikum-judul').value;
+          const link = document.getElementById('praktikum-link').value;
+          const komentar = document.getElementById('praktikum-komentar').value;
+          
+          showPraktikumAlert('success', 'Mengumpulkan data...');
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Mengirim...';
+
+          const submissionData = {
+            id: Date.now(),
+            nis: currentUser.nis,
+            nama: currentUser.nama,
+            kelas: `${currentUser.tingkatan} - ${currentUser.kelas}`,
+            judul: judul,
+            linkJawaban: link,
+            komentar: komentar,
+            tanggal: new Date().toISOString()
+          };
+
+          try {
+            // **PENTING**: Anda harus membuat fungsi `submitPraktikum` di database.js
+            // const result = await submitPraktikum(submissionData);
+            
+            // Simulasi sukses (HAPUS INI JIKA submitPraktikum SUDAH DIBUAT)
+            await new Promise(resolve => setTimeout(resolve, 2000)); 
+            const result = { status: "success" };
+            
+            if (result.status === "success") {
+               showPraktikumAlert('success', 'Jawaban berhasil dikumpulkan!');
+               praktikumForm.reset();
+            } else {
+              showPraktikumAlert('error', result.message || 'Gagal mengumpulkan data.');
+            }
+            
+          } catch (error) {
+            console.error('Error pengumpulan:', error);
+            showPraktikumAlert('error', 'Terjadi kesalahan. Gagal terhubung ke server.');
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Kumpulkan Jawaban';
+          }
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
