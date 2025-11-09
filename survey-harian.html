@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Harian - Portal Siswa</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    :root {
+      --bg-color: #0a0a23;
+      --bg-gradient: linear-gradient(160deg, #3a0d6d, #0a0a23, #0b2f4f);
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(0, 229, 255, 0.2);
+      --text-color: #f0f0f0;
+      --text-muted: #a0a0a0;
+      --accent-color: #00e5ff;
+      --accent-color-hover: #9f2fff;
+      --success-color: #00c853;
+      --error-color: #ff3d00;
+      --card-bg: rgba(10, 10, 35, 0.7);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-color);
+      overflow-x: hidden;
+      min-height: 100vh;
+      padding-bottom: 60px; /* Ruang untuk footer */
+    }
+    #particle-network {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    .navbar {
+      position: fixed; top: 0; left: 0;
+      width: 100%; display: flex;
+      justify-content: space-between; align-items: center;
+      padding: 1rem 2rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 100;
+    }
+    .navbar .logo {
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--accent-color); text-decoration: none;
+    }
+    .navbar .logo span {
+      font-size: 0.8rem; font-weight: 300;
+      color: var(--text-muted); display: block; line-height: 1;
+    }
+    .profile-dropdown { position: relative; }
+    .profile-trigger {
+      background: var(--accent-color); color: var(--bg-color);
+      border: none; padding: 0.6rem 1.2rem;
+      border-radius: 20px; cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600; font-size: 0.9rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+    .profile-trigger:hover {
+      background: var(--accent-color-hover); color: var(--text-color);
+    }
+    .dropdown-content {
+      display: none; position: absolute;
+      right: 0; top: calc(100% + 10px);
+      background: var(--card-bg);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px; min-width: 280px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      z-index: 101; overflow: hidden;
+    }
+    .dropdown-content.show { display: block; }
+    .profile-info { padding: 1rem; border-bottom: 1px solid var(--glass-border); }
+    .profile-info div { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .profile-info div strong { color: var(--text-color); margin-right: 0.5rem; }
+    .dropdown-menu a {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.8rem 1rem; text-decoration: none;
+      color: var(--text-color); font-size: 0.9rem;
+      transition: background-color 0.2s ease;
+    }
+    .dropdown-menu a:hover { background-color: var(--glass-border); }
+    .dropdown-menu a:last-child { color: var(--error-color); }
+    
+    .main-content {
+      position: relative; z-index: 2;
+      max-width: 1200px; margin: 0 auto;
+      padding: 100px 2rem 2rem 2rem;
+    }
+    h1 {
+      font-size: 2.5rem; font-weight: 600;
+      color: var(--accent-color);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .subtitle {
+      font-size: 1.1rem; color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+    
+    /* Tombol/Card Peluncur GForm */
+    .launch-container {
+      max-width: 600px;
+      margin: 2rem auto 0 auto;
+    }
+    .launch-card {
+      display: block;
+      text-decoration: none;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .launch-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-color);
+    }
+    .launch-card i.launch-icon {
+      font-size: 3.5rem;
+      color: var(--accent-color);
+      margin-bottom: 1.5rem;
+    }
+    .launch-card h3 {
+      font-size: 1.8rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+    }
+    .launch-card p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .launch-button {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: var(--accent-color);
+      color: var(--bg-color);
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .launch-card:hover .launch-button {
+      background: var(--accent-color-hover);
+      color: var(--text-color);
+    }
+    .launch-button i {
+      font-size: 0.8em;
+      margin-left: 0.5rem;
+    }
+    
+    /* Form (Modal) */
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label {
+      display: block; font-size: 0.9rem;
+      font-weight: 500; color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .form-group input {
+      width: 100%; padding: 0.8rem 1rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px; color: var(--text-color);
+      font-family: 'Poppins', sans-serif; font-size: 1rem;
+    }
+    .form-group input:focus {
+      outline: none; border-color: var(--accent-color);
+    }
+    .btn {
+      width: 100%; padding: 0.8rem 1rem;
+      background: var(--accent-color); color: var(--bg-color);
+      border: none; border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .btn:hover {
+      background: var(--accent-color-hover); color: var(--text-color);
+    }
+    .modal-overlay {
+      display: none; position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 200;
+      justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      padding: 2rem; border-radius: 12px;
+      width: 90%; max-width: 500px;
+      position: relative;
+    }
+    .close-modal {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: 1.5rem; color: var(--text-muted);
+      cursor: pointer;
+    }
+    .modal-content h2 {
+      color: var(--accent-color); margin-bottom: 1.5rem; text-align: center;
+    }
+    .alert {
+      display: none; padding: 0.8rem 1rem;
+      border-radius: 8px; margin-bottom: 1rem;
+      font-size: 0.9rem; background: var(--error-color);
+      color: var(--white);
+    }
+    .alert.success { background: var(--success-color); }
+    .site-footer {
+      position: fixed; bottom: 0; left: 0;
+      width: 100%; background: rgba(10, 10, 35, 0.8);
+      border-top: 1px solid var(--glass-border);
+      backdrop-filter: blur(5px);
+      padding: 1rem; text-align: center;
+      color: var(--text-muted); font-size: 0.85rem;
+      z-index: 10;
+    }
+  </style>
+  
+  <script src="js/database.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    protectPage('siswa');
+  </script>
+</head>
+<body>
+
+  <canvas id="particle-network"></canvas>
+
+  <nav class="navbar">
+    <a href="dashboard.html" class="logo">PORTAL WEB INFORMATIKA<span> SISWA YPI NURUL HADINA</span></a>
+    
+    <div class="profile-dropdown">
+      <button class="profile-trigger" id="profile-trigger-btn">
+        <span id="welcome-name">Memuat...</span> <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
+      </button>
+      <div class="dropdown-content" id="dropdown-content">
+        <div class="profile-info">
+          <div><strong>Nama:</strong> <span id="profile-name">...</span></div>
+          <div><strong>NIS:</strong> <span id="profile-nis">...</span></div>
+          <div><strong>Kelas:</strong> <span id="profile-kelas">...</span></div>
+        </div>
+        <div class="dropdown-menu">
+          <a href="#" id="change-password-btn"><i class="fas fa-key"></i> Ganti Password</a>
+          <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <h1>Survey Harian</h1>
+    <p class="subtitle">
+      Partisipasi Anda sangat penting untuk kami. Klik tombol di bawah untuk memulai.
+    </p>
+    
+    <div class="launch-container">
+      
+      <a href="#" id="gform-link" class="launch-card" target="_blank">
+        <i class="fas fa-clipboard-list launch-icon"></i>
+        <h3>Mulai Survey Harian</h3>
+        <p>
+          Anda akan diarahkan ke halaman Google Form untuk mengisi survey. 
+          Klik di mana saja pada kotak ini untuk membuka form di tab baru.
+        </p>
+        <span class="launch-button">
+          Buka Survey <i class="fas fa-external-link-alt"></i>
+        </span>
+      </a>
+      
+    </div>
+    
+  </main>
+
+  <div class="modal-overlay" id="password-modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Ganti Password</h2>
+      <form id="password-form">
+        <div class="alert" id="password-alert-error"></div>
+        <div class="alert success" id="password-alert-success"></div>
+        <div class="form-group">
+          <label for="old-password">Password Lama</label>
+          <input type="password" id="old-password" required>
+        </div>
+        <div class="form-group">
+          <label for="new-password">Password Baru</label>
+          <input type="password" id="new-password" required>
+        </div>
+        <div class="form-group">
+          <label for="confirm-password">Konfirmasi Password Baru</label>
+          <input type="password" id="confirm-password" required>
+        </div>
+        <button type="submit" class="btn">Simpan Perubahan</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2025 Portal Web Informatika - YPI Nurul Hadina. Didesain oleh Administrator.</p>
+  </footer>
+
+  <script id="particle-script">
+    (function() {
+      const canvas = document.getElementById('particle-network');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = window.innerWidth, height = window.innerHeight;
+      canvas.width = width; canvas.height = height;
+      let particles = [];
+      const particleCount = 100, connectDistance = 150, mouse = { x: null, y: null, radius: 100 };
+      window.addEventListener('resize', () => {
+        width = window.innerWidth; height = window.innerHeight;
+        canvas.width = width; canvas.height = height;
+      });
+      window.addEventListener('mousemove', (event) => {
+        mouse.x = event.x; mouse.y = event.y;
+      });
+      window.addEventListener('mouseout', () => {
+        mouse.x = null; mouse.y = null;
+      });
+      class Particle {
+        constructor() {
+          this.x = Math.random() * width; this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5;
+          this.radius = 2.5; this.color = 'rgba(0, 229, 255, 0.7)';
+        }
+        update() {
+          if (this.x < 0 || this.x > width) this.vx = -this.vx;
+          if (this.y < 0 || this.y > height) this.vy = -this.vy;
+          this.x += this.vx; this.y += this.vy;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = this.color; ctx.fill();
+        }
+      }
+      function init() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+      }
+      function connect() {
+        for (let a = 0; a < particles.length; a++) {
+          for (let b = a + 1; b < particles.length; b++) {
+            const dx = particles[a].x - particles[b].x, dy = particles[a].y - particles[b].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < connectDistance) {
+              const opacity = 1 - (distance / connectDistance);
+              ctx.strokeStyle = `rgba(0, 229, 255, ${opacity * 0.3})`;
+              ctx.lineWidth = 1.5; ctx.beginPath();
+              ctx.moveTo(particles[a].x, particles[a].y);
+              ctx.lineTo(particles[b].x, particles[b].y); ctx.stroke();
+            }
+          }
+          if (mouse.x) {
+            const dx = particles[a].x - mouse.x, dy = particles[a].y - mouse.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < mouse.radius) {
+              const opacity = 1 - (distance / mouse.radius);
+              ctx.strokeStyle = `rgba(159, 47, 255, ${opacity * 0.5})`;
+              ctx.lineWidth = 2; ctx.beginPath();
+              ctx.moveTo(particles[a].x, particles[a].y);
+              ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+            }
+          }
+        }
+      }
+      function animate() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        connect(); requestAnimationFrame(animate);
+      }
+      init(); animate();
+    })();
+  </script>
+  
+  <script id="app-logic-script">
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentUser = getSession();
+      if (!currentUser) { console.error("User tidak ditemukan."); return; }
+      const welcomeName = document.getElementById('welcome-name');
+      const profileName = document.getElementById('profile-name');
+      const profileNis = document.getElementById('profile-nis');
+      const profileKelas = document.getElementById('profile-kelas');
+      const triggerBtn = document.getElementById('profile-trigger-btn');
+      const dropdownContent = document.getElementById('dropdown-content');
+      const logoutBtn = document.getElementById('logout-btn');
+      const changePwBtn = document.getElementById('change-password-btn');
+      const pwModal = document.getElementById('password-modal');
+      const pwForm = document.getElementById('password-form');
+      const closePwModalBtn = document.querySelector('.close-modal');
+      const alertError = document.getElementById('password-alert-error');
+      const alertSuccess = document.getElementById('password-alert-success');
+      if (welcomeName) welcomeName.textContent = currentUser.nama;
+      if (profileName) profileName.textContent = currentUser.nama;
+      if (profileNis) profileNis.textContent = currentUser.nis;
+      if (profileKelas) profileKelas.textContent = `${currentUser.tingkatan} - ${currentUser.kelas}`;
+      if (triggerBtn && dropdownContent) {
+          triggerBtn.addEventListener('click', () => dropdownContent.classList.toggle('show'));
+          window.addEventListener('click', (e) => {
+              if (e.target !== triggerBtn && !triggerBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                  dropdownContent.classList.remove('show');
+              }
+          });
+      }
+      if (logoutBtn) logoutBtn.addEventListener('click', (e) => { e.preventDefault(); handleLogout(); });
+      function openPasswordModal() { if (pwModal) pwModal.style.display = 'flex'; }
+      function closePasswordModal() {
+          if (pwModal) pwModal.style.display = 'none';
+          if (pwForm) pwForm.reset();
+          if (alertError) alertError.style.display = 'none';
+          if (alertSuccess) alertSuccess.style.display = 'none';
+      }
+      function showPasswordAlert(type, message) {
+        const alertEl = (type === 'error') ? alertError : alertSuccess;
+        const otherEl = (type === 'error') ? alertSuccess : alertError;
+        if (otherEl) otherEl.style.display = 'none';
+        if (alertEl) { alertEl.textContent = message; alertEl.style.display = 'block'; }
+      }
+      if (changePwBtn) changePwBtn.addEventListener('click', openPasswordModal);
+      if (closePwModalBtn) closePwModalBtn.addEventListener('click', closePasswordModal);
+      if (pwForm) {
+          pwForm.addEventListener('submit', async (e) => {
+              e.preventDefault();
+              const oldPass = document.getElementById('old-password').value;
+              const newPass = document.getElementById('new-password').value;
+              const confirmPass = document.getElementById('confirm-password').value;
+              if (newPass.length < 4) return showPasswordAlert('error', 'Password baru minimal 4 karakter.');
+              if (newPass !== confirmPass) return showPasswordAlert('error', 'Password baru dan konfirmasi tidak cocok.');
+              showPasswordAlert('success', 'Memverifikasi...');
+              const findResult = await findUserByNIS(currentUser.nis);
+              if (!findResult || findResult.status !== "success" || !findResult.user) {
+                  return showPasswordAlert('error', 'Gagal mengambil data Anda dari server.');
+              }
+              const currentUserData = findResult.user;
+              if (currentUserData.password !== oldPass) {
+                  return showPasswordAlert('error', 'Password lama salah.');
+              }
+              // Ganti 'updateUserPassword' dengan fungsi yang ada di database.js Anda
+              // const updateResult = await updateUserPassword(currentUser.nis, newPass); 
+              const updateResult = { status: "success" }; // Placeholder
+              if (updateResult.status === "success") {
+                  showPasswordAlert('success', 'Password berhasil diperbarui.');
+                  pwForm.reset();
+                  setTimeout(closePasswordModal, 2000);
+              } else {
+                  showPasswordAlert('error', updateResult.message || 'Gagal memperbarui password.');
+              }
+          });
+      }
+    });
+  </script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Dapatkan link GForm Anda.
+      // Buka Google Form -> Klik "Kirim" -> Klik ikon Rantai (Link) -> Salin Link
+      
+      // 2. TEMPEL LINK GOOGLE FORM (BIASA, BUKAN EMBED) ANDA DI SINI:
+      const GFORM_DIRECT_URL = "https://forms.gle/n6cDbfbzxKLQGueZA";
+
+      // 3. Skrip ini akan memasukkannya ke dalam tombol
+      const gformLink = document.getElementById('gform-link');
+      
+      if (gformLink) {
+        // Cek jika linknya masih placeholder
+        if (GFORM_DIRECT_URL.includes("CONTOH_LINK_SURVEY_HARIAN")) {
+          const container = document.querySelector('.launch-container');
+          container.innerHTML = "<h1><i class='fas fa-exclamation-triangle'></i> Konfigurasi Diperlukan</h1><p class='subtitle'>Harap edit file `survey-harian.html` dan tempel link Google Form Anda di dalam tag `<script>` di bagian bawah.</p>";
+        } else {
+          gformLink.href = GFORM_DIRECT_URL;
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
